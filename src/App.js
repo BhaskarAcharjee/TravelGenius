@@ -29,34 +29,55 @@ const App = () => {
 
   useEffect(() => {
     const filtered = places.filter((place) => Number(place.rating) > rating);
-
     setFilteredPlaces(filtered);
-  }, [rating]);
+  }, [rating, places]); // Include 'places' dependency here to ensure it's re-evaluated when 'places' changes
 
   useEffect(() => {
-    if (bounds) {
+    if (bounds && coords.lat && coords.lng) {
       setIsLoading(true);
-
+  
       getWeatherData(coords.lat, coords.lng)
-        .then((data) => setWeatherData(data));
-
+        .then((data) => {
+          setWeatherData(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching weather data:', error);
+          setWeatherData([]); // Set default state when fetching weather data fails
+        });
+  
       getPlacesData(type, bounds.sw, bounds.ne)
         .then((data) => {
-          setPlaces(data.filter((place) => place.name && place.num_reviews > 0));
+          if (data) {
+            const filteredData = data.filter((place) => place.name && place.num_reviews > 0);
+            setPlaces(filteredData);
+            setFilteredPlaces([]);
+            setRating('');
+          } else {
+            console.error('Received empty data from getPlacesData');
+            setPlaces([]);
+            setFilteredPlaces([]);
+            setRating('');
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching places data:', error);
+          setPlaces([]); // Set default state when fetching places data fails
           setFilteredPlaces([]);
-          setRating('');
           setIsLoading(false);
         });
     }
-  }, [bounds, type]);
+  }, [bounds, type, coords.lat, coords.lng]);
+  
 
   const onLoad = (autoC) => setAutocomplete(autoC);
 
   const onPlaceChanged = () => {
-    const lat = autocomplete.getPlace().geometry.location.lat();
-    const lng = autocomplete.getPlace().geometry.location.lng();
-
-    setCoords({ lat, lng });
+    if (autocomplete) {
+      const lat = autocomplete.getPlace().geometry.location.lat();
+      const lng = autocomplete.getPlace().geometry.location.lng();
+      setCoords({ lat, lng });
+    }
   };
 
   return (
