@@ -112,22 +112,22 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    background: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)", // Gradient background for card
-    borderRadius: "15px", // Rounded corners for modern look
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-    color: theme.palette.common.white, // White text color for better contrast
+    background: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+    borderRadius: "15px",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+    color: theme.palette.common.white,
   },
   media: {
     height: 350,
-    borderRadius: "15px 15px 0 0", // Rounded top corners
+    borderRadius: "15px 15px 0 0",
   },
   title: {
-    fontFamily: "'Poppins', sans-serif", // Modern font style
-    fontWeight: 700, // Bold text for title
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 700,
   },
   chip: {
     margin: "5px 5px 5px 0",
-    background: "linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%)", // Gradient background for chips
+    background: "linear-gradient(135deg, #f6a911 0%, #fda085 100%)", // Orange gradient for chips
     color: theme.palette.common.white, // White text color for better contrast
   },
   subtitle: {
@@ -139,13 +139,13 @@ const useStyles = makeStyles((theme) => ({
   spacing: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
   },
   button: {
-    background: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)", // Gradient background for buttons
+    background: "linear-gradient(135deg, #f37335 0%, #fda085 100%)", // Orange gradient for buttons
     color: theme.palette.common.white, // White text color for better contrast
     "&:hover": {
-      background: "linear-gradient(135deg, #38f9d7 0%, #43e97b 100%)", // Reverse gradient on hover
+      background: "linear-gradient(135deg, #fda085 0%, #f37335 100%)", // Reverse gradient on hover
     },
   },
 }));

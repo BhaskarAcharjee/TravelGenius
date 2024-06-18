@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Autocomplete } from "@react-google-maps/api";
-import { AppBar, Toolbar, Typography, InputBase, Box } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, InputBase, Box, Avatar } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 
@@ -20,9 +20,12 @@ const Header = ({ setCoordinates }) => {
   return (
     <AppBar position="static" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" className={classes.title}>
-          Travel Genius
-        </Typography>
+        <Box display="flex" alignItems="center">
+          <Avatar src="/logo.png" alt="Travel Genius Logo" className={classes.logo} />
+          <Typography variant="h5" className={classes.title}>
+            Travel Genius
+          </Typography>
+        </Box>
         <Box display="flex">
           <Typography variant="h6" className={classes.subtitle}>
             Explore New Places
@@ -51,19 +54,20 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`, // Add a subtle border at the bottom
   },
   title: {
-    display: "none",
     fontFamily: "'Poppins', sans-serif", // Modern font
     fontWeight: 600,
+    marginLeft: theme.spacing(1),
+    display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
   },
   subtitle: {
-    display: "none",
     fontFamily: "'Poppins', sans-serif", // Modern font
     fontWeight: 400,
     color: alpha(theme.palette.common.white, 0.85),
     marginRight: theme.spacing(2),
+    display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -99,12 +103,17 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    color: theme.palette.common.white,
+    color: alpha(theme.palette.common.black, 0.75),
     [theme.breakpoints.up("md")]: { width: "20ch" },
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  logo: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    marginRight: theme.spacing(1),
   },
 }));
 

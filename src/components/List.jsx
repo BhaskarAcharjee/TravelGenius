@@ -10,7 +10,7 @@ import {
   Box,
 } from "@material-ui/core";
 
-import PlaceDetails from "../PlaceDetails/PlaceDetails";
+import PlaceDetails from "./PlaceDetails";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 
 const List = ({
@@ -106,9 +106,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   select: {
-    color: theme.palette.common.white,
+    color: theme.palette.common.black,
     "& .MuiSelect-icon": {
-      color: theme.palette.common.white,
+      color: theme.palette.common.black,
     },
   },
   loading: {
