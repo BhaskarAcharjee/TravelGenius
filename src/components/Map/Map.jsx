@@ -82,17 +82,13 @@ const Map = ({
   );
 };
 
-const useStyles = makeStyles(() => ({
-  paper: {
-    padding: "10px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "100px",
-  },
+const useStyles = makeStyles((theme) => ({
   mapContainer: {
     height: "85vh",
     width: "100%",
+    background: "linear-gradient(to bottom, #3a1c71, #d76d77, #ffaf7b)", // Gradient background
+    borderRadius: "8px", // Rounded corners for modern look
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
   },
   markerContainer: {
     position: "absolute",
@@ -100,8 +96,22 @@ const useStyles = makeStyles(() => ({
     zIndex: 1,
     "&:hover": { zIndex: 2 },
   },
+  paper: {
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    width: "120px",
+    background: "linear-gradient(to top, #ff7e5f, #feb47b)", // Gradient for paper
+    color: theme.palette.common.white, // White text color for contrast
+  },
   pointer: {
     cursor: "pointer",
+  },
+  typography: {
+    fontFamily: "'Poppins', sans-serif", // Modern font
+    fontWeight: 600,
+    color: theme.palette.common.white, // White text color for contrast
   },
 }));
 

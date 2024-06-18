@@ -21,9 +21,9 @@ const PlaceDetails = ({ place, selected, refProp }) => {
     refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <Card elevation={6}>
+    <Card className={classes.card} elevation={6}>
       <CardMedia
-        style={{ height: 350 }}
+        className={classes.media}
         image={
           place.photo
             ? place.photo.images.large.url
@@ -32,7 +32,7 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         title={place.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom variant="h5" className={classes.title}>
           {place.name}
         </Typography>
         <Box display="flex" justifyContent="space-between">
@@ -92,14 +92,14 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         <CardActions>
           <Button
             size="small"
-            color="primary"
+            className={classes.button}
             onClick={() => window.open(place.web_url, "_blank")}
           >
             Trip Advisor
           </Button>
           <Button
             size="small"
-            color="primary"
+            className={classes.button}
             onClick={() => window.open(place.website, "_blank")}
           >
             Website
@@ -110,9 +110,25 @@ const PlaceDetails = ({ place, selected, refProp }) => {
   );
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  card: {
+    background: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)", // Gradient background for card
+    borderRadius: "15px", // Rounded corners for modern look
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    color: theme.palette.common.white, // White text color for better contrast
+  },
+  media: {
+    height: 350,
+    borderRadius: "15px 15px 0 0", // Rounded top corners
+  },
+  title: {
+    fontFamily: "'Poppins', sans-serif", // Modern font style
+    fontWeight: 700, // Bold text for title
+  },
   chip: {
     margin: "5px 5px 5px 0",
+    background: "linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%)", // Gradient background for chips
+    color: theme.palette.common.white, // White text color for better contrast
   },
   subtitle: {
     display: "flex",
@@ -124,6 +140,13 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  button: {
+    background: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)", // Gradient background for buttons
+    color: theme.palette.common.white, // White text color for better contrast
+    "&:hover": {
+      background: "linear-gradient(135deg, #38f9d7 0%, #43e97b 100%)", // Reverse gradient on hover
+    },
   },
 }));
 

@@ -10,7 +10,7 @@ const Header = ({ setCoordinates }) => {
 
   const onLoad = (autoC) => setAutocomplete(autoC);
 
-  const onPlaceChanged = (autoC) => {
+  const onPlaceChanged = () => {
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
 
@@ -18,13 +18,13 @@ const Header = ({ setCoordinates }) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" className={classes.title}>
           Travel Genius
         </Typography>
         <Box display="flex">
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.subtitle}>
             Explore New Places
           </Typography>
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
@@ -45,8 +45,25 @@ const Header = ({ setCoordinates }) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  appBar: {
+    background: "linear-gradient(to right, #ff7e5f, #feb47b)", // Gradient background
+    boxShadow: "none", // Remove default shadow
+    borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`, // Add a subtle border at the bottom
+  },
   title: {
     display: "none",
+    fontFamily: "'Poppins', sans-serif", // Modern font
+    fontWeight: 600,
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+  },
+  subtitle: {
+    display: "none",
+    fontFamily: "'Poppins', sans-serif", // Modern font
+    fontWeight: 400,
+    color: alpha(theme.palette.common.white, 0.85),
+    marginRight: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -54,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.35) },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
@@ -72,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    color: alpha(theme.palette.common.white, 0.75),
   },
   inputRoot: {
     color: "inherit",
@@ -81,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
+    color: theme.palette.common.white,
     [theme.breakpoints.up("md")]: { width: "20ch" },
   },
   toolbar: {
