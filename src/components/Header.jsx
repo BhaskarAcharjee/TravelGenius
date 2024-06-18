@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { AppBar, Toolbar, Typography, InputBase, Box, Avatar } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
@@ -7,18 +7,34 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 const Header = ({ setCoordinates }) => {
   const classes = useStyles();
   const [autocomplete, setAutocomplete] = useState(null);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState("up");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (currentScrollTop > lastScrollTop) {
+        setScrollDirection("down");
+      } else {
+        setScrollDirection("up");
+      }
+      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollTop]);
 
   const onLoad = (autoC) => setAutocomplete(autoC);
 
   const onPlaceChanged = () => {
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
-
     setCoordinates({ lat, lng });
   };
 
   return (
-    <AppBar position="static" className={classes.appBar}>
+    <AppBar position="fixed" className={`${classes.appBar} ${scrollDirection === "down" ? classes.appBarHidden : ""}`}>
       <Toolbar className={classes.toolbar}>
         <Box display="flex" alignItems="center">
           <Avatar src="/logo.png" alt="Travel Genius Logo" className={classes.logo} />
@@ -52,6 +68,11 @@ const useStyles = makeStyles((theme) => ({
     background: "linear-gradient(to right, #ff7e5f, #feb47b)", // Gradient background
     boxShadow: "none", // Remove default shadow
     borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`, // Add a subtle border at the bottom
+    transition: "top 0.3s", // Smooth transition for showing/hiding header
+    zIndex: theme.zIndex.drawer + 1, // Ensure it's above drawer if present
+  },
+  appBarHidden: {
+    top: "-72px", // Adjust based on your header height
   },
   title: {
     fontFamily: "'Poppins', sans-serif", // Modern font
