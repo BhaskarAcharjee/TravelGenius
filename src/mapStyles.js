@@ -1,100 +1,100 @@
 export default [
   {
-    featureType: 'all',
-    elementType: 'all',
+    featureType: "all",
+    elementType: "all",
     stylers: [
       {
-        saturation: '32',
+        saturation: "32",
       },
       {
-        lightness: '-3',
+        lightness: "-3",
       },
       {
-        visibility: 'on',
+        visibility: "on",
       },
       {
-        weight: '1.18',
+        weight: "1.18",
       },
     ],
   },
   {
-    featureType: 'administrative',
-    elementType: 'labels',
+    featureType: "administrative",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'landscape',
-    elementType: 'labels',
+    featureType: "landscape",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'landscape.man_made',
-    elementType: 'all',
+    featureType: "landscape.man_made",
+    elementType: "all",
     stylers: [
       {
-        saturation: '-70',
+        saturation: "-70",
       },
       {
-        lightness: '14',
+        lightness: "14",
       },
     ],
   },
   {
-    featureType: 'poi',
-    elementType: 'labels',
+    featureType: "poi",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'road',
-    elementType: 'labels',
+    featureType: "road",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'transit',
-    elementType: 'labels',
+    featureType: "transit",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'water',
-    elementType: 'all',
+    featureType: "water",
+    elementType: "all",
     stylers: [
       {
-        saturation: '100',
+        saturation: "100",
       },
       {
-        lightness: '-14',
+        lightness: "-14",
       },
     ],
   },
   {
-    featureType: 'water',
-    elementType: 'labels',
+    featureType: "water",
+    elementType: "labels",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
       {
-        lightness: '12',
+        lightness: "12",
       },
     ],
   },
