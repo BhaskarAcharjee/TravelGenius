@@ -3,8 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab/Rating';
-
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import mapStyles from './mapStyles';
 
@@ -62,5 +61,20 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, 
         </div>
     );
 }
+
+const useStyles = makeStyles(() => ({
+    paper: {
+      padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100px',
+    },
+    mapContainer: {
+      height: '85vh', width: '100%',
+    },
+    markerContainer: {
+      position: 'absolute', transform: 'translate(-50%, -50%)', zIndex: 1, '&:hover': { zIndex: 2 },
+    },
+    pointer: {
+      cursor: 'pointer',
+    },
+  }));
 
 export default Map;

@@ -3,8 +3,7 @@ import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chi
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Rating from '@material-ui/lab/Rating';
-
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const PlaceDetails = ({ place, selected, refProp }) => {
     const classes = useStyles();
@@ -63,5 +62,17 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         </Card>
     );
 }
+
+const useStyles = makeStyles(() => ({
+    chip: {
+        margin: '5px 5px 5px 0',
+      },
+      subtitle: {
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px',
+      },
+      spacing: {
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      },
+  }));
 
 export default PlaceDetails;

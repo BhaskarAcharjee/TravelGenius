@@ -2,8 +2,7 @@ import React, { useState, useEffect, createRef } from 'react';
 import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
 
 import PlaceDetails from '../PlaceDetails/PlaceDetails';
-
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const List = ({ places, childClicked, isLoading, type, setType, rating, setRating }) => {
     const classes = useStyles();
@@ -57,5 +56,26 @@ const List = ({ places, childClicked, isLoading, type, setType, rating, setRatin
         </div>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1), minWidth: 120, marginBottom: '30px',
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+    loading: {
+      height: '600px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+    },
+    container: {
+      padding: '25px',
+    },
+    marginBottom: {
+      marginBottom: '30px',
+    },
+    list: {
+      height: '75vh', overflow: 'auto',
+    },
+  }));
 
 export default List;
