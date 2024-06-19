@@ -49,10 +49,12 @@ const App = () => {
     <>
       <CssBaseline />
       <Header setCoordinates={setCoordinates} />
-      <Hero />
+      <div id="hero">
+        <Hero />
+      </div>
       <Container maxWidth="xl" id="main-content">
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} id="map">
             <Map
               setCoordinates={setCoordinates}
               setBounds={setBounds}
@@ -62,10 +64,10 @@ const App = () => {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <WeatherCard />
+            <WeatherCard coordinates={coordinates} />
           </Grid>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} id="list-content">
           <Grid item xs={12}>
             <List
               places={filteredPlaces.length ? filteredPlaces : places}

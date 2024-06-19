@@ -5,8 +5,12 @@ import {
   Container,
   Typography,
   makeStyles,
+  Grid,
 } from "@material-ui/core";
 import ExploreIcon from "@material-ui/icons/Explore";
+import RestaurantIcon from "@material-ui/icons/Restaurant";
+import HotelIcon from "@material-ui/icons/Hotel";
+import LocalActivityIcon from "@material-ui/icons/LocalActivity";
 
 const Hero = () => {
   const classes = useStyles();
@@ -30,6 +34,35 @@ const Hero = () => {
           <Typography variant="h5" className={classes.landingSubtitle}>
             Find the best places to eat, stay, and explore near you.
           </Typography>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} sm={4} className={classes.categoryItem}>
+              <RestaurantIcon className={classes.categoryIcon} />
+              <Typography variant="h6" className={classes.categoryTitle}>
+                Restaurants
+              </Typography>
+              <Typography variant="body1" className={classes.categoryText}>
+                Discover the best dining experiences, from local favorites to top-rated eateries.
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} className={classes.categoryItem}>
+              <HotelIcon className={classes.categoryIcon} />
+              <Typography variant="h6" className={classes.categoryTitle}>
+                Hotels
+              </Typography>
+              <Typography variant="body1" className={classes.categoryText}>
+                Find the perfect place to stay, with options ranging from budget to luxury.
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} className={classes.categoryItem}>
+              <LocalActivityIcon className={classes.categoryIcon} />
+              <Typography variant="h6" className={classes.categoryTitle}>
+                Attractions
+              </Typography>
+              <Typography variant="body1" className={classes.categoryText}>
+                Explore popular attractions and hidden gems that make your trip memorable.
+              </Typography>
+            </Grid>
+          </Grid>
           <Button
             variant="contained"
             color="primary"
@@ -52,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     background: "linear-gradient(to right, #ff7e5f, #feb47b)",
     color: theme.palette.common.white,
-    position: "relative", // Ensure relative positioning for z-index layering
+    position: "relative",
     marginBottom: "20px",
   },
   landingContent: {
@@ -83,8 +116,30 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     borderRadius: theme.spacing(3),
     padding: theme.spacing(1.5, 4),
+    marginTop: theme.spacing(3),
     backgroundColor: "#ff7e5f",
     "&:hover": { backgroundColor: "#feb47b" },
+    animation: `$fadeIn 3.5s ${theme.transitions.easing.easeInOut}`,
+  },
+  categoryItem: {
+    textAlign: "center",
+    animation: `$fadeIn 4s ${theme.transitions.easing.easeInOut}`,
+  },
+  categoryIcon: {
+    fontSize: "3rem",
+    marginBottom: theme.spacing(1),
+    color: theme.palette.common.white,
+  },
+  categoryTitle: {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 600,
+    marginBottom: theme.spacing(1),
+    color: theme.palette.common.white,
+  },
+  categoryText: {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 400,
+    color: theme.palette.common.white,
   },
   "@keyframes fadeIn": {
     "0%": { opacity: 0 },

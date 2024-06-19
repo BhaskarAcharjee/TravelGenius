@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Autocomplete } from "@react-google-maps/api";
-import { AppBar, Toolbar, Typography, InputBase, Box, Avatar } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, InputBase, Box, Avatar, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import HomeIcon from "@material-ui/icons/Home";
+import MapIcon from "@material-ui/icons/Map";
+import RestaurantIcon from "@material-ui/icons/Restaurant";
 import { alpha, makeStyles } from "@material-ui/core/styles";
+import { Link as ScrollLink } from "react-scroll";
 
 const Header = ({ setCoordinates }) => {
   const classes = useStyles();
@@ -47,17 +51,31 @@ const Header = ({ setCoordinates }) => {
             Travel Genius
           </Typography>
         </Box>
-        <Box display="flex">
-          {/* <Typography variant="h6" className={classes.subtitle}>
-            Explore New Places
-          </Typography> */}
+        <Box display="flex" alignItems="center" className={classes.navLinks}>
+          <ScrollLink to="hero" smooth={true} duration={500}>
+            <IconButton color="inherit" aria-label="home">
+              <HomeIcon />
+            </IconButton>
+          </ScrollLink>
+          <ScrollLink to="map" smooth={true} duration={500}>
+            <IconButton color="inherit" aria-label="map">
+              <MapIcon />
+            </IconButton>
+          </ScrollLink>
+          <ScrollLink to="list-content" smooth={true} duration={500}>
+            <IconButton color="inherit" aria-label="restaurants">
+              <RestaurantIcon />
+            </IconButton>
+          </ScrollLink>
+        </Box>
+        <Box display="flex" alignItems="center">
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Explore New Places.."
+                placeholder="Explore New Places..."
                 classes={{ root: classes.inputRoot, input: classes.inputInput }}
               />
             </div>
@@ -140,6 +158,15 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(6),
     height: theme.spacing(6),
     marginRight: theme.spacing(1),
+  },
+  navLinks: {
+    flexGrow: 1,
+    display: "flex",
+    justifyContent: "center",
+    gap: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 
