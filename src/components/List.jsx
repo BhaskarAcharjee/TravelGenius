@@ -3,15 +3,13 @@ import {
   CircularProgress,
   Grid,
   Typography,
-  InputLabel,
-  MenuItem,
   FormControl,
   Select,
+  MenuItem,
   Box,
 } from "@material-ui/core";
-
+import { makeStyles } from "@material-ui/core/styles";
 import PlaceDetails from "./PlaceDetails";
-import { alpha, makeStyles } from "@material-ui/core/styles";
 
 const List = ({
   places,
@@ -36,7 +34,7 @@ const List = ({
   return (
     <div className={classes.container}>
       <Typography variant="h4" className={classes.title}>
-        Restaurants, Hotels & Attractions near me
+        Explore Dining, Accommodations, and Attractions Nearby
       </Typography>
       {isLoading ? (
         <div className={classes.loading}>
@@ -45,35 +43,35 @@ const List = ({
       ) : (
         <>
           <Box display="flex" justifyContent="space-between" mb={3}>
-            <FormControl className={classes.formControl}>
-              <InputLabel>Type</InputLabel>
+            <FormControl variant="outlined" className={classes.formControl}>
               <Select
                 value={type}
                 onChange={(e) => setType(e.target.value)}
+                displayEmpty
                 className={classes.select}
               >
                 <MenuItem value="restaurants">Restaurants</MenuItem>
-                <MenuItem value="hotels">Hotels</MenuItem>
+                <MenuItem value="hotels">Accomodations</MenuItem>
                 <MenuItem value="attractions">Attractions</MenuItem>
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
-              <InputLabel>Rating</InputLabel>
+            <FormControl variant="outlined" className={classes.formControl}>
               <Select
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
+                displayEmpty
                 className={classes.select}
               >
                 <MenuItem value={0}>All</MenuItem>
-                <MenuItem value={3}>Above 3.0</MenuItem>
-                <MenuItem value={4}>Above 4.0</MenuItem>
-                <MenuItem value={4.5}>Above 4.5</MenuItem>
+                <MenuItem value={3}>Above 3.0 ★</MenuItem>
+                <MenuItem value={4}>Above 4.0 ★</MenuItem>
+                <MenuItem value={4.5}>Above 4.5 ★</MenuItem>
               </Select>
             </FormControl>
           </Box>
           <Grid container spacing={3} className={classes.list}>
             {places?.map((place, i) => (
-              <Grid ref={elRefs[i]} item key={i} xs={12}>
+              <Grid ref={elRefs[i]} item key={i} xs={12} sm={6} md={4}>
                 <PlaceDetails
                   place={place}
                   selected={Number(childClicked) === i}
@@ -98,17 +96,22 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    minWidth: 150,
+    flex: 1,
+    backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
   },
   select: {
-    color: theme.palette.common.black,
+    padding: theme.spacing(1.5, 2),
+    color: theme.palette.text.primary,
+    "&:focus": {
+      backgroundColor: "transparent",
+    },
+    "& .MuiOutlinedInput-input": {
+      padding: theme.spacing(1.5, 2),
+    },
     "& .MuiSelect-icon": {
-      color: theme.palette.common.black,
+      color: theme.palette.text.primary,
     },
   },
   loading: {
@@ -122,6 +125,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#f0f2f5",
     borderRadius: theme.shape.borderRadius,
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    marginTop: "20px",
+    marginBottom: "20px",
   },
   list: {
     height: "75vh",
@@ -138,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "4px",
     },
     "&::-webkit-scrollbar-track": {
-      backgroundColor: "#f1f1f1",
+      backgroundColor: theme.palette.background.paper,
       borderRadius: "4px",
     },
   },

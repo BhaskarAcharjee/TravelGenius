@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
@@ -84,7 +84,7 @@ const Map = ({
 
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
-    height: "85vh",
+    height: "70vh",
     width: "100%",
     background: "linear-gradient(to bottom, #3a1c71, #d76d77, #ffaf7b)", // Gradient background
     borderRadius: "8px", // Rounded corners for modern look

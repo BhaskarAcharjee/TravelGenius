@@ -28,9 +28,14 @@ const Header = ({ setCoordinates }) => {
   const onLoad = (autoC) => setAutocomplete(autoC);
 
   const onPlaceChanged = () => {
-    const lat = autocomplete.getPlace().geometry.location.lat();
-    const lng = autocomplete.getPlace().geometry.location.lng();
-    setCoordinates({ lat, lng });
+    const place = autocomplete.getPlace();
+    if (place.geometry) {
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      setCoordinates({ lat, lng });
+    } else {
+      console.error("Place has no geometry information");
+    }
   };
 
   return (
@@ -43,16 +48,16 @@ const Header = ({ setCoordinates }) => {
           </Typography>
         </Box>
         <Box display="flex">
-          <Typography variant="h6" className={classes.subtitle}>
+          {/* <Typography variant="h6" className={classes.subtitle}>
             Explore New Places
-          </Typography>
+          </Typography> */}
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search..."
+                placeholder="Explore New Places.."
                 classes={{ root: classes.inputRoot, input: classes.inputInput }}
               />
             </div>
