@@ -6,8 +6,8 @@ import List from "./components/List";
 import Map from "./components/Map/Map";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
-import "./style/global.css";
 import WeatherCard from "./components/Weather/WeatherCard";
+import "./style/global.css";
 
 const App = () => {
   const [places, setPlaces] = useState([]);

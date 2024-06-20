@@ -27,7 +27,7 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         image={
           place.photo
             ? place.photo.images.large.url
-            : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
+            : "https://www.travelxp.com/_next/image?url=https%3A%2F%2Fimages.travelxp.com%2Fimages%2Findia%2Fmandvi%2Fbastian.png&w=1920&q=75"
         }
         title={place.name}
       />

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Autocomplete } from "@react-google-maps/api";
-import { AppBar, Toolbar, Typography, InputBase, Box, Avatar, IconButton } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  InputBase,
+  Box,
+  Avatar,
+  IconButton,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import HomeIcon from "@material-ui/icons/Home";
 import MapIcon from "@material-ui/icons/Map";
@@ -16,7 +24,8 @@ const Header = ({ setCoordinates }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const currentScrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       if (currentScrollTop > lastScrollTop) {
         setScrollDirection("down");
       } else {
@@ -43,10 +52,19 @@ const Header = ({ setCoordinates }) => {
   };
 
   return (
-    <AppBar position="fixed" className={`${classes.appBar} ${scrollDirection === "down" ? classes.appBarHidden : ""}`}>
+    <AppBar
+      position="fixed"
+      className={`${classes.appBar} ${
+        scrollDirection === "down" ? classes.appBarHidden : ""
+      }`}
+    >
       <Toolbar className={classes.toolbar}>
         <Box display="flex" alignItems="center">
-          <Avatar src="/logo.png" alt="Travel Genius Logo" className={classes.logo} />
+          <Avatar
+            src="/logo.png"
+            alt="Travel Genius Logo"
+            className={classes.logo}
+          />
           <Typography variant="h5" className={classes.title}>
             Travel Genius
           </Typography>
