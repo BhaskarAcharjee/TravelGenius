@@ -7,6 +7,7 @@ import Map from "./components/Map/Map";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import WeatherCard from "./components/Weather/WeatherCard";
+import AskAI from "./components/AskAI";
 import "./style/global.css";
 
 const App = () => {
@@ -80,6 +81,7 @@ const App = () => {
             />
           </Grid>
         </Grid>
+        <AskAI />
       </Container>
       <Footer />
     </>

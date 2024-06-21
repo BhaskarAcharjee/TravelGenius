@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Travel Advisor API (RapidApi)
 export const getPlacesData = async (type, sw, ne) => {
   try {
     const {
@@ -26,16 +27,11 @@ export const getPlacesData = async (type, sw, ne) => {
   }
 };
 
+// Weather API (OpenWeatherMap)
 export const getWeatherData = async (lat, lon) => {
   try {
     const { data } = await axios.get(
-      `https://open-weather13.p.rapidapi.com/city/latlon/${lat}/${lon}`,
-      {
-        headers: {
-          'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-          'x-rapidapi-host': 'open-weather13.p.rapidapi.com',
-        },
-      }
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_OPENWEATHERMAP_KEY}`
     );
 
     return data;
@@ -43,3 +39,5 @@ export const getWeatherData = async (lat, lon) => {
     console.log(error);
   }
 };
+
+// AI Recommendation API
