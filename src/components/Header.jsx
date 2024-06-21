@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete } from "@react-google-maps/api";
 import {
   AppBar,
   Toolbar,
   Typography,
-  InputBase,
   Box,
   Avatar,
   IconButton,
+  Button,
 } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
 import HomeIcon from "@material-ui/icons/Home";
 import MapIcon from "@material-ui/icons/Map";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import { Link as ScrollLink } from "react-scroll";
 
-const Header = ({ setCoordinates }) => {
+const Header = () => {
   const classes = useStyles();
-  const [autocomplete, setAutocomplete] = useState(null);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [scrollDirection, setScrollDirection] = useState("up");
 
@@ -38,16 +35,10 @@ const Header = ({ setCoordinates }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop]);
 
-  const onLoad = (autoC) => setAutocomplete(autoC);
-
-  const onPlaceChanged = () => {
-    const place = autocomplete.getPlace();
-    if (place.geometry) {
-      const lat = place.geometry.location.lat();
-      const lng = place.geometry.location.lng();
-      setCoordinates({ lat, lng });
-    } else {
-      console.error("Place has no geometry information");
+  const handleAiRecommendationClick = () => {
+    const aiSection = document.getElementById("ai-section");
+    if (aiSection) {
+      aiSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -86,19 +77,14 @@ const Header = ({ setCoordinates }) => {
             </IconButton>
           </ScrollLink>
         </Box>
-        <Box display="flex" alignItems="center">
-          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Explore New Places..."
-                classes={{ root: classes.inputRoot, input: classes.inputInput }}
-              />
-            </div>
-          </Autocomplete>
-        </Box>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.aiButton}
+          onClick={handleAiRecommendationClick}
+        >
+          Get AI Recommendation
+        </Button>
       </Toolbar>
     </AppBar>
   );
@@ -124,59 +110,6 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
   },
-  subtitle: {
-    fontFamily: "'Poppins', sans-serif", // Modern font
-    fontWeight: 400,
-    color: alpha(theme.palette.common.white, 0.85),
-    marginRight: theme.spacing(2),
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-    "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.35) },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: alpha(theme.palette.common.white, 0.75),
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    color: alpha(theme.palette.common.black, 0.75),
-    [theme.breakpoints.up("md")]: { width: "20ch" },
-  },
-  toolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  logo: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    marginRight: theme.spacing(1),
-  },
   navLinks: {
     flexGrow: 1,
     display: "flex",
@@ -185,6 +118,24 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
+  },
+  aiButton: {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 600,
+    borderRadius: theme.spacing(3),
+    padding: theme.spacing(1.5, 4),
+    marginLeft: theme.spacing(2),
+    backgroundColor: "#ff7e5f",
+    "&:hover": { backgroundColor: "#feb47b" },
+  },
+  logo: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    marginRight: theme.spacing(1),
+  },
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-between",
   },
 }));
 

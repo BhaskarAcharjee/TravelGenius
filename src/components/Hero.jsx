@@ -24,7 +24,7 @@ const Hero = () => {
   };
 
   return (
-    <section className={classes.landingSection}>
+    <section className={classes.landingSection} id="hero">
       <Container maxWidth="lg" className={classes.landingContent}>
         <Box display="flex" alignItems="center" flexDirection="column">
           <ExploreIcon className={classes.landingIcon} />

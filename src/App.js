@@ -49,10 +49,10 @@ const App = () => {
   return (
     <>
       <CssBaseline />
-      <Header setCoordinates={setCoordinates} />
-      <div id="hero">
+      <Header />
+      
         <Hero />
-      </div>
+     
       <Container maxWidth="xl" id="main-content">
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} id="map">
