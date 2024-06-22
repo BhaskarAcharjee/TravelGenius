@@ -10,8 +10,9 @@ import {
   Stepper,
   Step,
   StepLabel,
-  CircularProgress,
   IconButton,
+  CircularProgress,
+  useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ExploreIcon from "@material-ui/icons/Explore";
@@ -21,6 +22,8 @@ import MoodIcon from "@material-ui/icons/Mood";
 import ChatIcon from "@material-ui/icons/Chat";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+
+import { getAIRecommendation } from "../api/apiService"; 
 
 const steps = [
   {
@@ -68,11 +71,13 @@ const AskAI = () => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [city, setCity] = useState("");
-  const [days, setDays] = useState(1); // Default to 1 day
+  const [days, setDays] = useState(1);
   const [budget, setBudget] = useState("");
   const [mood, setMood] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
@@ -87,8 +92,7 @@ const AskAI = () => {
   };
 
   const handleBackMain = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 4);
-    // clear all text fields
+    setActiveStep(0);
     setCity("");
     setDays(1);
     setBudget("");
@@ -98,7 +102,6 @@ const AskAI = () => {
 
   const handleSubmit = () => {
     setLoading(true);
-    // Simulate AI response (replace with actual implementation)
     setTimeout(() => {
       setResponse(
         `AI Recommendation for ${city} for ${days} days with a ${budget} budget and feeling ${mood} [yet to implement].`
@@ -106,6 +109,18 @@ const AskAI = () => {
       setLoading(false);
     }, 2000); // Simulating loading time
   };
+
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const aiResponse = await getAIRecommendation(city, days, budget, mood);
+  //     setResponse(aiResponse);
+  //   } catch (error) {
+  //     setResponse("Failed to get AI recommendation. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleIncrementDays = () => {
     setDays((prevDays) => prevDays + 1);
@@ -117,6 +132,21 @@ const AskAI = () => {
     }
   };
 
+  const isNextButtonDisabled = () => {
+    switch (activeStep) {
+      case 0:
+        return city.trim() === "";
+      case 1:
+        return days < 1;
+      case 2:
+        return budget.trim() === "";
+      case 3:
+        return mood.trim() === "";
+      default:
+        return false;
+    }
+  };
+
   return (
     <Paper className={classes.container} id="ai-section">
       <Typography variant="h5" gutterBottom>
@@ -124,18 +154,20 @@ const AskAI = () => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((step, index) => (
-              <Step key={step.label}>
-                <StepLabel>
-                  <Box className={classes.stepLabel}>
-                    {step.icon}
-                    {step.label}
-                  </Box>
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          {!isMobile && (
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {steps.map((step, index) => (
+                <Step key={step.label}>
+                  <StepLabel>
+                    <Box className={classes.stepLabel}>
+                      {step.icon}
+                      {step.label}
+                    </Box>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          )}
         </Grid>
         <Grid item xs={12}>
           {activeStep === 0 && (
@@ -161,6 +193,7 @@ const AskAI = () => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={isNextButtonDisabled()}
                   >
                     Next
                   </Button>
@@ -207,6 +240,7 @@ const AskAI = () => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={isNextButtonDisabled()}
                   >
                     Next
                   </Button>
@@ -245,6 +279,7 @@ const AskAI = () => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={isNextButtonDisabled()}
                   >
                     Next
                   </Button>
@@ -268,6 +303,7 @@ const AskAI = () => {
                     onClick={() => {
                       setMood(option.label);
                       handleNext();
+                      handleSubmit();
                     }}
                   >
                     {option.label}
@@ -284,10 +320,11 @@ const AskAI = () => {
           {activeStep === 4 && (
             <Box>
               <Box className={classes.outputBox}>
-                <Typography variant="body1">{steps[4].description}</Typography>
-              </Box>
-              <Box className={classes.outputBox}>
-                <Typography variant="body1">{response}</Typography>
+                {loading ? (
+                  <CircularProgress />
+                ) : (
+                  <Typography variant="body1">{response}</Typography>
+                )}
               </Box>
               <Box className={classes.buttonContainer}>
                 <Button onClick={handleBackMain} className={classes.button}>
@@ -316,11 +353,14 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(2),
   },
   outputBox: {
-    padding: theme.spacing(2),
     minHeight: "200px",
-    backgroundColor: "#fff",
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: "4px",
+    marginTop: theme.spacing(2),
   },
   buttonContainer: {
     display: "flex",

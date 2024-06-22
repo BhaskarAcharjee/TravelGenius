@@ -10,7 +10,7 @@ import weatherMistIcon from "../../assets/images/weather-mist.webp";
 import weatherRainIcon from "../../assets/images/weather-rain.webp";
 import weatherSmokeIcon from "../../assets/images/weather-smoke.png";
 import weatherSnowIcon from "../../assets/images/weather-snow.webp";
-import { getWeatherData } from "../../api";
+import { getWeatherData } from "../../api/apiService";
 
 const WeatherCard = ({ coordinates }) => {
   const [city, setCity] = useState("India");

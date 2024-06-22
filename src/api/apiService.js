@@ -1,4 +1,5 @@
 import axios from "axios";
+import { OpenAI } from "openai";
 
 // Travel Advisor API (RapidApi)
 export const getPlacesData = async (type, sw, ne) => {
@@ -41,3 +42,24 @@ export const getWeatherData = async (lat, lon) => {
 };
 
 // AI Recommendation API
+export const getAIRecommendation = async (city, days, budget, mood) => {
+  try {
+    const openai = new OpenAI({
+      apiKey: "sk-proj-aizwnbwo026nifX7LjAwT3BlbkFJiXIfu8TSgN9j0WOEWMaA", dangerouslyAllowBrowser: true 
+    });
+
+    const prompt = `Plan a ${days}-day trip to ${city} with a ${budget} budget. Focus on ${mood} activities.`;
+
+    const response = await openai.completions.create({
+      model: "gpt-3.5-turbo-instruct",
+      prompt: prompt,
+      max_tokens: 200,
+      temperature: 0.7,
+    });
+
+    return response.choices[0].text.trim();
+  } catch (error) {
+    console.error("Error fetching AI recommendation:", error);
+    return "Failed to get AI recommendation. Please try again.";
+  }
+};
