@@ -45,7 +45,7 @@ export const getWeatherData = async (lat, lon) => {
 export const getAIRecommendation = async (city, days, budget, mood) => {
   try {
     const openai = new OpenAI({
-      apiKey: "sk-proj-aizwnbwo026nifX7LjAwT3BlbkFJiXIfu8TSgN9j0WOEWMaA", dangerouslyAllowBrowser: true 
+      apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true 
     });
 
     const prompt = `Plan a ${days}-day trip to ${city} with a ${budget} budget. Focus on ${mood} activities.`;
