@@ -3,14 +3,11 @@ import {
   CircularProgress,
   Grid,
   Typography,
-  FormControl,
-  Select,
   MenuItem,
   Box,
-  InputLabel,
   IconButton,
   TextField,
-  Button,
+  useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PlaceDetails from "./PlaceDetails";
@@ -32,6 +29,8 @@ const List = ({
   const classes = useStyles();
   const [elRefs, setElRefs] = useState([]);
   const [layout, setLayout] = useState("grid");
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const refs = Array(places?.length)
@@ -92,18 +91,36 @@ const List = ({
               <MenuItem value={4}>Above 4.0 ★</MenuItem>
               <MenuItem value={4.5}>Above 4.5 ★</MenuItem>
             </TextField>
-            <Box className={classes.iconsContainer}>
+            {!isMobile &&(
+              <Box className={classes.iconsContainer}>
               <IconButton onClick={() => handleLayoutChange("grid")}>
-                <GridOnIcon className={layout === "grid" ? classes.activeIcon : classes.icon} />
+                <GridOnIcon
+                  className={
+                    layout === "grid" ? classes.activeIcon : classes.icon
+                  }
+                />
               </IconButton>
               <IconButton onClick={() => handleLayoutChange("list")}>
-                <ListIcon className={layout === "list" ? classes.activeIcon : classes.icon} />
+                <ListIcon
+                  className={
+                    layout === "list" ? classes.activeIcon : classes.icon
+                  }
+                />
               </IconButton>
             </Box>
+            )}
+            
           </form>
           <Grid container spacing={3} className={classes.list}>
             {places?.map((place, i) => (
-              <Grid ref={elRefs[i]} item key={i} xs={12} sm={layout === "grid" ? 6 : 12} md={layout === "grid" ? 4 : 12}>
+              <Grid
+                ref={elRefs[i]}
+                item
+                key={i}
+                xs={12}
+                sm={layout === "grid" ? 6 : 12}
+                md={layout === "grid" ? 4 : 12}
+              >
                 <PlaceDetails
                   place={place}
                   selected={Number(childClicked) === i}

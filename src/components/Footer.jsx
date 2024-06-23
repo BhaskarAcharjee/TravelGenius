@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Link, Grid } from "@material-ui/core";
-import { Facebook, Twitter, Instagram, LinkedIn } from "@material-ui/icons";
+import { Twitter, LinkedIn, GitHub, Language } from "@material-ui/icons";
 
 const Footer = () => {
   const classes = useStyles();
@@ -11,11 +11,11 @@ const Footer = () => {
         <Grid container spacing={4} justifyContent="center">
           <Grid item>
             <Link
-              href="https://www.facebook.com/bhaSkar.acharya.143"
+              href="https://bhaskaracharjee.vercel.app/"
               color="inherit"
               target="_blank"
             >
-              <Facebook className={classes.icon} />
+              <Language className={classes.icon} />
             </Link>
           </Grid>
           <Grid item>
@@ -29,20 +29,20 @@ const Footer = () => {
           </Grid>
           <Grid item>
             <Link
-              href="https://www.instagram.com/bhassssskar/"
-              color="inherit"
-              target="_blank"
-            >
-              <Instagram className={classes.icon} />
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link
               href="https://www.linkedin.com/in/bhaskar-acharjee/"
               color="inherit"
               target="_blank"
             >
               <LinkedIn className={classes.icon} />
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link
+              href="https://github.com/BhaskarAcharjee"
+              color="inherit"
+              target="_blank"
+            >
+              <GitHub className={classes.icon} />
             </Link>
           </Grid>
         </Grid>
@@ -52,7 +52,9 @@ const Footer = () => {
           align="center"
           className={classes.text}
         >
-          &copy; {new Date().getFullYear()} Travel Genius. All rights reserved.
+          &copy;
+          {/* {new Date().getFullYear()}  */}
+          2024 Travel Genius. All rights reserved.
         </Typography>
       </Container>
     </footer>

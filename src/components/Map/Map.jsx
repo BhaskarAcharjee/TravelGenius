@@ -74,6 +74,7 @@ const Map = ({
             <img
               height={100}
               src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+              alt="weather icon"
             />
           </div>
         ))}

@@ -11,6 +11,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
 import HotelIcon from "@material-ui/icons/Hotel";
 import LocalActivityIcon from "@material-ui/icons/LocalActivity";
+import EmojiObjectsIcon from "@material-ui/icons/EmojiObjects"; // Added AI Recommendation icon
 
 const Hero = () => {
   const classes = useStyles();
@@ -32,7 +33,8 @@ const Hero = () => {
             Discover Your Next Adventure
           </Typography>
           <Typography variant="h5" className={classes.landingSubtitle}>
-            Find the best places to eat, stay, and explore near you.
+            Find the best places to eat, stay, and explore near you, now with
+            AI-powered recommendations.
           </Typography>
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={4} className={classes.categoryItem}>
@@ -41,7 +43,8 @@ const Hero = () => {
                 Restaurants
               </Typography>
               <Typography variant="body1" className={classes.categoryText}>
-                Discover the best dining experiences, from local favorites to top-rated eateries.
+                Discover the best dining experiences, from local favorites to
+                top-rated eateries.
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4} className={classes.categoryItem}>
@@ -50,7 +53,8 @@ const Hero = () => {
                 Hotels
               </Typography>
               <Typography variant="body1" className={classes.categoryText}>
-                Find the perfect place to stay, with options ranging from budget to luxury.
+                Find the perfect place to stay, with options ranging from budget
+                to luxury.
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4} className={classes.categoryItem}>
@@ -59,7 +63,18 @@ const Hero = () => {
                 Attractions
               </Typography>
               <Typography variant="body1" className={classes.categoryText}>
-                Explore popular attractions and hidden gems that make your trip memorable.
+                Explore popular attractions and hidden gems that make your trip
+                memorable.
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} className={classes.categoryItem}>
+              <EmojiObjectsIcon className={classes.categoryIcon} />
+              <Typography variant="h6" className={classes.categoryTitle}>
+                AI Recommendations
+              </Typography>
+              <Typography variant="body1" className={classes.categoryText}>
+                Get personalized suggestions powered by AI to make your trip
+                even more special.
               </Typography>
             </Grid>
           </Grid>

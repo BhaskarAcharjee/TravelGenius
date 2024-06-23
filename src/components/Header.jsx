@@ -7,6 +7,7 @@ import {
   Avatar,
   IconButton,
   Button,
+  useMediaQuery,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import MapIcon from "@material-ui/icons/Map";
@@ -18,6 +19,8 @@ const Header = () => {
   const classes = useStyles();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [scrollDirection, setScrollDirection] = useState("up");
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +53,11 @@ const Header = () => {
       }`}
     >
       <Toolbar className={classes.toolbar}>
-        <Box display="flex" alignItems="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          className={classes.logoContainer}
+        >
           <Avatar
             src="/logo.png"
             alt="Travel Genius Logo"
@@ -77,14 +84,16 @@ const Header = () => {
             </IconButton>
           </ScrollLink>
         </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.aiButton}
-          onClick={handleAiRecommendationClick}
-        >
-          Get AI Recommendation
-        </Button>
+        {!isMobile && (
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.aiButton}
+            onClick={handleAiRecommendationClick}
+          >
+            Get AI Recommendation
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
@@ -106,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     marginLeft: theme.spacing(1),
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("xs")]: {
       display: "block",
     },
   },
@@ -136,6 +145,10 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 

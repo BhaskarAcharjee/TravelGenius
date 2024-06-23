@@ -15,57 +15,15 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ExploreIcon from "@material-ui/icons/Explore";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import MoodIcon from "@material-ui/icons/Mood";
-import ChatIcon from "@material-ui/icons/Chat";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import { formatResponseText } from "../utils/formatText";
+import { steps } from "../constants/constants";
 
-import { getAIRecommendation } from "../api/apiService"; 
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const steps = [
-  {
-    label: "City Name",
-    icon: <ExploreIcon />,
-    description: "Where do you want to go?",
-  },
-  {
-    label: "Days",
-    icon: <DateRangeIcon />,
-    description: "How many days will you stay?",
-  },
-  {
-    label: "Budget",
-    icon: <AttachMoneyIcon />,
-    description: "What is your budget level?",
-  },
-  {
-    label: "Features",
-    icon: <MoodIcon />,
-    description: "Enter the features you like:",
-    options: [
-      {
-        label: "Chill 🏖️",
-        description: "We will loosen the trip schedule as much as possible.",
-      },
-      {
-        label: "Nature 🏞️",
-        description: "We will embrace attractions in natural settings.",
-      },
-      {
-        label: "Urban 🏙️",
-        description: "We will prioritize attractions in downtown areas.",
-      },
-    ],
-  },
-  {
-    label: "AI Recommendation",
-    icon: <ChatIcon />,
-    description: "Loading AI Recommendation...",
-  },
-];
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 const AskAI = () => {
   const classes = useStyles();
@@ -100,27 +58,20 @@ const AskAI = () => {
     setResponse("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setResponse(
-        `AI Recommendation for ${city} for ${days} days with a ${budget} budget and feeling ${mood} [yet to implement].`
-      );
+    try {
+      const prompt = `Plan a ${days}-day trip to ${city} with a ${budget} budget (in Indian Rs.). Focus on ${mood} activities.`;
+      const result = await model.generateContent(prompt);
+      const aiResponse = await result.response.text();
+      const formatedResponse = formatResponseText(aiResponse);
+      setResponse(formatedResponse);
+    } catch (error) {
+      setResponse("Failed to get AI recommendation. Please try again.");
+    } finally {
       setLoading(false);
-    }, 2000); // Simulating loading time
+    }
   };
-
-  // const handleSubmit = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const aiResponse = await getAIRecommendation(city, days, budget, mood);
-  //     setResponse(aiResponse);
-  //   } catch (error) {
-  //     setResponse("Failed to get AI recommendation. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleIncrementDays = () => {
     setDays((prevDays) => prevDays + 1);
@@ -150,7 +101,7 @@ const AskAI = () => {
   return (
     <Paper className={classes.container} id="ai-section">
       <Typography variant="h5" gutterBottom>
-        <b>Ask AI for Recommendations</b>
+        <b>Let TravelGenius Plan Your Perfect Trip</b>
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -266,9 +217,9 @@ const AskAI = () => {
                   select
                   required
                 >
-                  <MenuItem value="Low">Low</MenuItem>
-                  <MenuItem value="Medium">Medium</MenuItem>
-                  <MenuItem value="High">High</MenuItem>
+                  <MenuItem value="Economic">Economic</MenuItem>
+                  <MenuItem value="Normal">Normal</MenuItem>
+                  <MenuItem value="Luxury">Luxury</MenuItem>
                 </TextField>
                 <Box className={classes.buttonContainer}>
                   <Button onClick={handleBack} className={classes.button}>
@@ -323,7 +274,7 @@ const AskAI = () => {
                 {loading ? (
                   <CircularProgress />
                 ) : (
-                  <Typography variant="body1">{response}</Typography>
+                  <div dangerouslySetInnerHTML={{ __html: response }} />
                 )}
               </Box>
               <Box className={classes.buttonContainer}>
