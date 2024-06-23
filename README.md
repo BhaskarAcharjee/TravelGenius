@@ -1,6 +1,6 @@
 ## TravelGenius
 
-TravelGenius is a React-based travel planning application designed to help users explore nearby attractions, restaurants, and hotels using real-time location data and weather forecasts. This project integrates Material UI for styling and leverages the Google Maps API for map functionality and location-based recommendations.
+TravelGenius is a React-based travel planning application designed to help users explore nearby attractions, restaurants, and hotels using real-time location data and weather forecasts. This project integrates Material UI for styling and leverages the Google Maps API for map functionality and location-based recommendations. Additionally, the app features AI-powered recommendations to enhance user experience.
 
 ### Live Link
 Visit the site at [TravelGenius](https://travelgenius.vercel.app/)
@@ -11,18 +11,27 @@ Visit the site at [TravelGenius](https://travelgenius.vercel.app/)
 #### App Interface
 ![Map & weather Interface](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/7f4d30e2-583e-4b29-ad40-66cb5202ec67)
 ![Screenshot (399)](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/cc0bf09e-8722-44a8-9a02-4eec11380cf2)
+#### AI recommendation
+![Screenshot (406)](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/024527e1-0c35-447a-b127-565a3f30b7a2)
+![Screenshot (408)](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/9496a59c-a741-4c53-8b45-e20bed6960b9)
 
 
 ### Features:
 - **Nearby Places Recommendations:** Get recommendations for attractions, restaurants, and hotels near your current location.
 - **Real-time Weather Forecast:** Provides weather information to help plan your trip effectively.
 - **Responsive Design:** Built with Material UI for a responsive and user-friendly interface.
+- **AI-powered Recommendations:** Receive comprehensive travel plans based on specific criteria such as day-wise itineraries, budget considerations, and mood preferences for a chosen location.
 
 ### Technologies Used:
 - React
-- Material UI
-- Google Maps API
 - JavaScript
+- Material UI
+
+### APIs Used:
+- Google Maps API
+- Travel Advisor
+- Open Weather Map
+- Google Generative AI API
 
 ### Getting Started:
 To run this project locally, follow these steps:
