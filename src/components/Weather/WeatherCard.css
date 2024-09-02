@@ -116,3 +116,80 @@ img {
   text-align: left;
   margin-top: -20px;
 }
+
+/* Media Queries for Responsive Design */
+
+/* Tablet and smaller devices */
+@media (max-width: 768px) {
+  .weather-card {
+    padding: 25px 20px;
+  }
+
+  .weather h1 {
+    font-size: 60px;
+  }
+
+  .weather h2 {
+    font-size: 30px;
+  }
+
+  .weather .weather-icon {
+    width: 70%;
+    height: 150px;
+  }
+
+  .details {
+    margin-top: 30px;
+    gap: 20px;
+  }
+
+  .details .humidity,
+  .wind {
+    font-size: 20px;
+  }
+
+  .details img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+  .weather-card {
+    padding: 20px 15px;
+  }
+
+  .weather h1 {
+    font-size: 45px;
+  }
+
+  .weather h2 {
+    font-size: 25px;
+  }
+
+  .weather .weather-icon {
+    width: 80%;
+    height: 120px;
+  }
+
+  .details {
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .details .humidity,
+  .wind {
+    font-size: 18px;
+  }
+
+  .details img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .col {
+    margin-top: 10px;
+  }
+}
