@@ -3,11 +3,12 @@ import {
   CircularProgress,
   Grid,
   Typography,
-  MenuItem,
   Box,
   IconButton,
-  TextField,
-  useMediaQuery,
+  Button,
+  Popover,
+  MenuItem,
+  Menu,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PlaceDetails from "./PlaceDetails";
@@ -16,9 +17,10 @@ import HotelIcon from "@mui/icons-material/Hotel";
 import AttractionsIcon from "@mui/icons-material/LocalActivity";
 import GridOnIcon from "@mui/icons-material/GridOn";
 import ListIcon from "@mui/icons-material/List";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 const ContainerWrapper = styled("div")(({ theme }) => ({
-  padding: "25px",
+  padding: "20px",
   backgroundColor: "#f0f2f5",
   borderRadius: theme.shape.borderRadius,
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -35,54 +37,37 @@ const Title = styled(Typography)({
   marginBottom: "10px",
 });
 
-const FormContainer = styled("form")({
+const ControlsContainer = styled(Box)({
   display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
   justifyContent: "space-between",
+  alignItems: "center",
   marginBottom: "16px",
-  width: "100%",
+  flexWrap: "wrap",
+  gap: "10px",
 });
 
-const CustomTextField = styled(TextField)({
-  flex: 1,
-  margin: "8px",
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#ff7e5f",
-    },
-    "&:hover fieldset": {
-      borderColor: "#feb47b",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#ff7e5f",
-    },
+const CategoryButton = styled(Button)(({ selected }) => ({
+  padding: "8px 16px",
+  borderRadius: "20px",
+  textTransform: "none",
+  fontWeight: selected ? "bold" : "normal",
+  background: selected
+    ? "linear-gradient(to right, #ff7e5f, #feb47b)"
+    : "transparent",
+  color: selected ? "#fff" : "#000",
+  border: selected ? "none" : "1px solid #ff7e5f",
+  "&:hover": {
+    background: "linear-gradient(to right, #ff7e5f, #feb47b)",
+    color: "#fff",
   },
-});
-
-const IconContainer = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-});
-
-const IconButtonStyled = styled(IconButton)(({ active }) => ({
-  color: active ? "#ff7e5f" : "inherit",
-  transition: "color 0.3s ease",
 }));
-
-const LoadingContainer = styled("div")({
-  height: "600px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
 
 const ListWrapper = styled(Grid)(({ theme }) => ({
   height: "75vh",
-  overflow: "auto",
-  backgroundColor: "#fff",
+  overflowY: "auto",
+  // backgroundColor: "#fff",
   borderRadius: theme.shape.borderRadius,
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  // boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   padding: "16px",
   marginTop: "8px",
   "&::-webkit-scrollbar": {
@@ -101,8 +86,7 @@ const ListWrapper = styled(Grid)(({ theme }) => ({
 const List = ({ places, childClicked, isLoading, type, setType, rating, setRating }) => {
   const [elRefs, setElRefs] = useState([]);
   const [layout, setLayout] = useState("grid");
-
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     const refs = Array(places?.length)
@@ -116,67 +100,85 @@ const List = ({ places, childClicked, isLoading, type, setType, rating, setRatin
     setLayout(newLayout);
   };
 
+  const handleFilterClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleFilterClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <ContainerWrapper>
       <Title variant="h4">
         <b>Explore Dining, Accommodations, and Attractions Nearby</b>
       </Title>
       {isLoading ? (
-        <LoadingContainer>
+        <Box
+          height="600px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <CircularProgress size="5rem" />
-        </LoadingContainer>
+        </Box>
       ) : (
         <>
-          <FormContainer>
-            <CustomTextField
-              select
-              label="Type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              variant="outlined"
-            >
-              <MenuItem value="restaurants">
-                <RestaurantIcon style={{ marginRight: "8px" }} /> Restaurants
-              </MenuItem>
-              <MenuItem value="hotels">
-                <HotelIcon style={{ marginRight: "8px" }} /> Accommodations
-              </MenuItem>
-              <MenuItem value="attractions">
-                <AttractionsIcon style={{ marginRight: "8px" }} /> Attractions
-              </MenuItem>
-            </CustomTextField>
+          <ControlsContainer>
+            {/* Category Selection */}
+            <Box display="flex" gap={1}>
+              <CategoryButton
+                selected={type === "restaurants"}
+                onClick={() => setType("restaurants")}
+                startIcon={<RestaurantIcon />}
+              >
+                Restaurants
+              </CategoryButton>
+              <CategoryButton
+                selected={type === "hotels"}
+                onClick={() => setType("hotels")}
+                startIcon={<HotelIcon />}
+              >
+                Accommodations
+              </CategoryButton>
+              <CategoryButton
+                selected={type === "attractions"}
+                onClick={() => setType("attractions")}
+                startIcon={<AttractionsIcon />}
+              >
+                Attractions
+              </CategoryButton>
+            </Box>
 
-            <CustomTextField
-              select
-              label="Rating"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              variant="outlined"
-            >
-              <MenuItem value={0}>All</MenuItem>
-              <MenuItem value={3}>Above 3.0 ★</MenuItem>
-              <MenuItem value={4}>Above 4.0 ★</MenuItem>
-              <MenuItem value={4.5}>Above 4.5 ★</MenuItem>
-            </CustomTextField>
+            {/* Right-Side Icons */}
+            <Box display="flex" alignItems="center">
+              {/* Rating Filter */}
+              <IconButton onClick={handleFilterClick}>
+                <FilterListIcon />
+              </IconButton>
 
-            {!isMobile && (
-              <IconContainer>
-                <IconButtonStyled
-                  onClick={() => handleLayoutChange("grid")}
-                  active={layout === "grid"}
-                >
-                  <GridOnIcon />
-                </IconButtonStyled>
-                <IconButtonStyled
-                  onClick={() => handleLayoutChange("list")}
-                  active={layout === "list"}
-                >
-                  <ListIcon />
-                </IconButtonStyled>
-              </IconContainer>
-            )}
-          </FormContainer>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleFilterClose}
+              >
+                <MenuItem onClick={() => setRating(0)}>All</MenuItem>
+                <MenuItem onClick={() => setRating(3)}>Above 3.0 ★</MenuItem>
+                <MenuItem onClick={() => setRating(4)}>Above 4.0 ★</MenuItem>
+                <MenuItem onClick={() => setRating(4.5)}>Above 4.5 ★</MenuItem>
+              </Menu>
 
+              {/* View Mode Toggle */}
+              <IconButton onClick={() => handleLayoutChange("grid")}>
+                <GridOnIcon color={layout === "grid" ? "primary" : "inherit"} />
+              </IconButton>
+              <IconButton onClick={() => handleLayoutChange("list")}>
+                <ListIcon color={layout === "list" ? "primary" : "inherit"} />
+              </IconButton>
+            </Box>
+          </ControlsContainer>
+
+          {/* List/Grid View */}
           <ListWrapper container spacing={3}>
             {places?.map((place, i) => (
               <Grid
