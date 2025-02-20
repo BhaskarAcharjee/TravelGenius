@@ -9,16 +9,16 @@ import {
   CardActions,
   Chip,
   IconButton,
-} from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import PhoneIcon from "@material-ui/icons/Phone";
-import LanguageIcon from "@material-ui/icons/Language";
-import TripOriginIcon from "@material-ui/icons/TripOrigin";
-import Rating from "@material-ui/lab/Rating";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import ShareIcon from "@material-ui/icons/Share";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LanguageIcon from "@mui/icons-material/Language";
+import TripOriginIcon from "@mui/icons-material/TripOrigin";
+import Rating from "@mui/lab/Rating";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShareIcon from "@mui/icons-material/Share";
+import { makeStyles } from "@mui/styles";
 
 const PlaceDetails = ({ place, selected, refProp }) => {
   const classes = useStyles();

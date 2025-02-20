@@ -1,8 +1,8 @@
-import ExploreIcon from "@material-ui/icons/Explore";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import MoodIcon from "@material-ui/icons/Mood";
-import ChatIcon from "@material-ui/icons/Chat";
+import ExploreIcon from "@mui/icons-material/Explore";
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import MoodIcon from "@mui/icons-material/Mood";
+import ChatIcon from "@mui/icons-material/Chat";
 
 export const steps = [
   {

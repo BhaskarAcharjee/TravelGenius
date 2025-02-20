@@ -8,25 +8,97 @@ import {
   IconButton,
   TextField,
   useMediaQuery,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import PlaceDetails from "./PlaceDetails";
-import RestaurantIcon from "@material-ui/icons/Restaurant";
-import HotelIcon from "@material-ui/icons/Hotel";
-import AttractionsIcon from "@material-ui/icons/LocalActivity";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import ListIcon from "@material-ui/icons/List";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import HotelIcon from "@mui/icons-material/Hotel";
+import AttractionsIcon from "@mui/icons-material/LocalActivity";
+import GridOnIcon from "@mui/icons-material/GridOn";
+import ListIcon from "@mui/icons-material/List";
 
-const List = ({
-  places,
-  childClicked,
-  isLoading,
-  type,
-  setType,
-  rating,
-  setRating,
-}) => {
-  const classes = useStyles();
+const ContainerWrapper = styled("div")(({ theme }) => ({
+  padding: "25px",
+  backgroundColor: "#f0f2f5",
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  marginTop: "20px",
+  marginBottom: "20px",
+}));
+
+const Title = styled(Typography)({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 600,
+  background: "linear-gradient(to right, #ff7e5f, #feb47b)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  marginBottom: "10px",
+});
+
+const FormContainer = styled("form")({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginBottom: "16px",
+  width: "100%",
+});
+
+const CustomTextField = styled(TextField)({
+  flex: 1,
+  margin: "8px",
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#ff7e5f",
+    },
+    "&:hover fieldset": {
+      borderColor: "#feb47b",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#ff7e5f",
+    },
+  },
+});
+
+const IconContainer = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+});
+
+const IconButtonStyled = styled(IconButton)(({ active }) => ({
+  color: active ? "#ff7e5f" : "inherit",
+  transition: "color 0.3s ease",
+}));
+
+const LoadingContainer = styled("div")({
+  height: "600px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const ListWrapper = styled(Grid)(({ theme }) => ({
+  height: "75vh",
+  overflow: "auto",
+  backgroundColor: "#fff",
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  padding: "16px",
+  marginTop: "8px",
+  "&::-webkit-scrollbar": {
+    width: "8px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ff7e5f",
+    borderRadius: "4px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: "4px",
+  },
+}));
+
+const List = ({ places, childClicked, isLoading, type, setType, rating, setRating }) => {
   const [elRefs, setElRefs] = useState([]);
   const [layout, setLayout] = useState("grid");
 
@@ -45,73 +117,67 @@ const List = ({
   };
 
   return (
-    <div className={classes.container}>
-      <Typography variant="h4" className={classes.title}>
+    <ContainerWrapper>
+      <Title variant="h4">
         <b>Explore Dining, Accommodations, and Attractions Nearby</b>
-      </Typography>
+      </Title>
       {isLoading ? (
-        <div className={classes.loading}>
+        <LoadingContainer>
           <CircularProgress size="5rem" />
-        </div>
+        </LoadingContainer>
       ) : (
         <>
-          <form className={classes.form}>
-            <TextField
+          <FormContainer>
+            <CustomTextField
               select
               label="Type"
               value={type}
               onChange={(e) => setType(e.target.value)}
               variant="outlined"
-              className={classes.textField}
-              InputLabelProps={{ className: classes.inputLabel }}
-              SelectProps={{ className: classes.select }}
             >
               <MenuItem value="restaurants">
-                <RestaurantIcon className={classes.icon} /> Restaurants
+                <RestaurantIcon style={{ marginRight: "8px" }} /> Restaurants
               </MenuItem>
               <MenuItem value="hotels">
-                <HotelIcon className={classes.icon} /> Accommodations
+                <HotelIcon style={{ marginRight: "8px" }} /> Accommodations
               </MenuItem>
               <MenuItem value="attractions">
-                <AttractionsIcon className={classes.icon} /> Attractions
+                <AttractionsIcon style={{ marginRight: "8px" }} /> Attractions
               </MenuItem>
-            </TextField>
-            <TextField
+            </CustomTextField>
+
+            <CustomTextField
               select
               label="Rating"
               value={rating}
               onChange={(e) => setRating(e.target.value)}
               variant="outlined"
-              className={classes.textField}
-              InputLabelProps={{ className: classes.inputLabel }}
-              SelectProps={{ className: classes.select }}
             >
               <MenuItem value={0}>All</MenuItem>
               <MenuItem value={3}>Above 3.0 ★</MenuItem>
               <MenuItem value={4}>Above 4.0 ★</MenuItem>
               <MenuItem value={4.5}>Above 4.5 ★</MenuItem>
-            </TextField>
-            {!isMobile &&(
-              <Box className={classes.iconsContainer}>
-              <IconButton onClick={() => handleLayoutChange("grid")}>
-                <GridOnIcon
-                  className={
-                    layout === "grid" ? classes.activeIcon : classes.icon
-                  }
-                />
-              </IconButton>
-              <IconButton onClick={() => handleLayoutChange("list")}>
-                <ListIcon
-                  className={
-                    layout === "list" ? classes.activeIcon : classes.icon
-                  }
-                />
-              </IconButton>
-            </Box>
+            </CustomTextField>
+
+            {!isMobile && (
+              <IconContainer>
+                <IconButtonStyled
+                  onClick={() => handleLayoutChange("grid")}
+                  active={layout === "grid"}
+                >
+                  <GridOnIcon />
+                </IconButtonStyled>
+                <IconButtonStyled
+                  onClick={() => handleLayoutChange("list")}
+                  active={layout === "list"}
+                >
+                  <ListIcon />
+                </IconButtonStyled>
+              </IconContainer>
             )}
-            
-          </form>
-          <Grid container spacing={3} className={classes.list}>
+          </FormContainer>
+
+          <ListWrapper container spacing={3}>
             {places?.map((place, i) => (
               <Grid
                 ref={elRefs[i]}
@@ -128,107 +194,11 @@ const List = ({
                 />
               </Grid>
             ))}
-          </Grid>
+          </ListWrapper>
         </>
       )}
-    </div>
+    </ContainerWrapper>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  title: {
-    fontFamily: "'Poppins', sans-serif",
-    fontWeight: 600,
-    background: "linear-gradient(to right, #ff7e5f, #feb47b)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    marginBottom: theme.spacing(1),
-  },
-  form: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: theme.spacing(2),
-    width: "100%",
-  },
-  textField: {
-    flex: 1,
-    margin: theme.spacing(1),
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#ff7e5f",
-      },
-      "&:hover fieldset": {
-        borderColor: "#feb47b",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#ff7e5f",
-      },
-    },
-  },
-  inputLabel: {
-    color: "#ff7e5f",
-  },
-  select: {
-    padding: theme.spacing(1.5, 2),
-    color: theme.palette.text.primary,
-    "&:focus": {
-      backgroundColor: "transparent",
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: theme.spacing(1.5, 2),
-    },
-    "& .MuiSelect-icon": {
-      color: theme.palette.text.primary,
-    },
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-    color: theme.palette.text.primary,
-  },
-  activeIcon: {
-    marginRight: theme.spacing(1),
-    color: "#ff7e5f",
-  },
-  iconsContainer: {
-    display: "flex",
-    alignItems: "center",
-  },
-  loading: {
-    height: "600px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  container: {
-    padding: "25px",
-    backgroundColor: "#f0f2f5",
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    marginTop: "20px",
-    marginBottom: "20px",
-  },
-  list: {
-    height: "75vh",
-    overflow: "auto",
-    backgroundColor: "#fff",
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    padding: theme.spacing(2),
-    marginTop: theme.spacing(1),
-    "&::-webkit-scrollbar": {
-      width: "8px",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#ff7e5f",
-      borderRadius: "4px",
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: theme.palette.background.paper,
-      borderRadius: "4px",
-    },
-  },
-}));
 
 export default List;

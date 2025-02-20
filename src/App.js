@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CssBaseline, Grid, Container } from "@material-ui/core";
+import { CssBaseline, Grid, Container } from "@mui/material";
 import { getPlacesData } from "./api/apiService";
 import Header from "./components/Header";
 import List from "./components/List";

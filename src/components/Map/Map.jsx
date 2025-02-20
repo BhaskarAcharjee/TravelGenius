@@ -1,11 +1,10 @@
 import React from "react";
 import GoogleMapReact from "google-map-react";
-import { Paper, Typography, useMediaQuery } from "@material-ui/core";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import Rating from "@material-ui/lab/Rating";
-import { makeStyles } from "@material-ui/core/styles";
-
+import { Rating } from "@mui/lab";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { makeStyles, useTheme } from "@mui/styles";  // Import useTheme
 import mapStyles from "./mapStyles";
+import { useMediaQuery, Paper, Typography } from "@mui/material";
 
 const Map = ({
   setCoordinates,
@@ -15,7 +14,8 @@ const Map = ({
   setChildClicked,
   weatherData,
 }) => {
-  const classes = useStyles();
+  const theme = useTheme();  // Get the theme object
+  const classes = useStyles({ theme });  // Pass theme as a prop
   const isDesktop = useMediaQuery("(min-width:600px)");
 
   return (
@@ -83,12 +83,12 @@ const Map = ({
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   mapContainer: {
     height: "70vh",
     width: "100%",
     background: "linear-gradient(to bottom, #3a1c71, #d76d77, #ffaf7b)", // Gradient background
-    borderRadius: "8px", // Rounded corners for modern look
+    borderRadius: "8px",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
   },
   markerContainer: {
@@ -97,23 +97,23 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     "&:hover": { zIndex: 2 },
   },
-  paper: {
+  paper: ({ theme }) => ({
     padding: "10px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     width: "120px",
     background: "linear-gradient(to top, #ff7e5f, #feb47b)", // Gradient for paper
-    color: theme.palette.common.white, // White text color for contrast
-  },
+    color: theme?.palette?.common?.white || "#fff", // Ensure fallback color
+  }),
   pointer: {
     cursor: "pointer",
   },
-  typography: {
+  typography: ({ theme }) => ({
     fontFamily: "'Poppins', sans-serif", // Modern font
     fontWeight: 600,
-    color: theme.palette.common.white, // White text color for contrast
-  },
+    color: theme?.palette?.common?.white || "#fff", // Ensure fallback color
+  }),
 }));
 
 export default Map;

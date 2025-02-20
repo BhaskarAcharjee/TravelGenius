@@ -8,29 +8,23 @@ import {
   IconButton,
   Button,
   useMediaQuery,
-} from "@material-ui/core";
-import HomeIcon from "@material-ui/icons/Home";
-import MapIcon from "@material-ui/icons/Map";
-import RestaurantIcon from "@material-ui/icons/Restaurant";
-import { alpha, makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import MapIcon from "@mui/icons-material/Map";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { styled, alpha } from "@mui/material/styles"; // ✅ Correct import
 import { Link as ScrollLink } from "react-scroll";
 
 const Header = () => {
-  const classes = useStyles();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [scrollDirection, setScrollDirection] = useState("up");
-
   const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop =
         window.pageYOffset || document.documentElement.scrollTop;
-      if (currentScrollTop > lastScrollTop) {
-        setScrollDirection("down");
-      } else {
-        setScrollDirection("up");
-      }
+      setScrollDirection(currentScrollTop > lastScrollTop ? "down" : "up");
       setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
     };
 
@@ -40,116 +34,81 @@ const Header = () => {
 
   const handleAiRecommendationClick = () => {
     const aiSection = document.getElementById("ai-section");
-    if (aiSection) {
-      aiSection.scrollIntoView({ behavior: "smooth" });
-    }
+    if (aiSection) aiSection.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <AppBar
-      position="fixed"
-      className={`${classes.appBar} ${
-        scrollDirection === "down" ? classes.appBarHidden : ""
-      }`}
-    >
-      <Toolbar className={classes.toolbar}>
-        <Box
-          display="flex"
-          alignItems="center"
-          className={classes.logoContainer}
-        >
-          <Avatar
-            src="/logo.png"
-            alt="Travel Genius Logo"
-            className={classes.logo}
-          />
-          <Typography variant="h5" className={classes.title}>
+    <StyledAppBar position="fixed" hide={scrollDirection === "down"}>
+      <Toolbar>
+        <LogoContainer>
+          <Avatar src="/logo.png" alt="Travel Genius Logo" />
+          <Typography
+            variant="h5"
+            sx={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+          >
             Travel Genius
           </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" className={classes.navLinks}>
-          <ScrollLink to="hero" smooth={true} duration={500}>
-            <IconButton color="inherit" aria-label="home">
+        </LogoContainer>
+        <NavLinks>
+          <ScrollLink to="hero" smooth duration={500}>
+            <IconButton color="inherit">
               <HomeIcon />
             </IconButton>
           </ScrollLink>
-          <ScrollLink to="map" smooth={true} duration={500}>
-            <IconButton color="inherit" aria-label="map">
+          <ScrollLink to="map" smooth duration={500}>
+            <IconButton color="inherit">
               <MapIcon />
             </IconButton>
           </ScrollLink>
-          <ScrollLink to="list-content" smooth={true} duration={500}>
-            <IconButton color="inherit" aria-label="restaurants">
+          <ScrollLink to="list-content" smooth duration={500}>
+            <IconButton color="inherit">
               <RestaurantIcon />
             </IconButton>
           </ScrollLink>
-        </Box>
+        </NavLinks>
         {!isMobile && (
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.aiButton}
-            onClick={handleAiRecommendationClick}
-          >
+          <AiButton onClick={handleAiRecommendationClick}>
             Get AI Recommendation
-          </Button>
+          </AiButton>
         )}
       </Toolbar>
-    </AppBar>
+    </StyledAppBar>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    background: "linear-gradient(to right, #ff7e5f, #feb47b)", // Gradient background
-    boxShadow: "none", // Remove default shadow
-    borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`, // Add a subtle border at the bottom
-    transition: "top 0.3s", // Smooth transition for showing/hiding header
-    zIndex: theme.zIndex.drawer + 1, // Ensure it's above drawer if present
-  },
-  appBarHidden: {
-    top: "-72px", // Adjust based on your header height
-  },
-  title: {
-    fontFamily: "'Poppins', sans-serif", // Modern font
-    fontWeight: 600,
-    marginLeft: theme.spacing(1),
+/* ✅ Use Styled Components instead of makeStyles */
+const StyledAppBar = styled(AppBar)(({ theme, hide }) => ({
+  background: "linear-gradient(to right, #ff7e5f, #feb47b)",
+  boxShadow: "none",
+  borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
+  transition: "top 0.3s",
+  zIndex: theme.zIndex.drawer + 1,
+  top: hide ? "-72px" : "0",
+}));
+
+const LogoContainer = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+});
+
+const NavLinks = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  display: "flex",
+  justifyContent: "center",
+  gap: theme.spacing(2),
+  [theme.breakpoints.down("sm")]: {
     display: "none",
-    [theme.breakpoints.up("xs")]: {
-      display: "block",
-    },
-  },
-  navLinks: {
-    flexGrow: 1,
-    display: "flex",
-    justifyContent: "center",
-    gap: theme.spacing(2),
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  aiButton: {
-    fontFamily: "'Poppins', sans-serif",
-    fontWeight: 600,
-    borderRadius: theme.spacing(3),
-    padding: theme.spacing(1.5, 4),
-    marginLeft: theme.spacing(2),
-    backgroundColor: "#ff7e5f",
-    "&:hover": { backgroundColor: "#feb47b" },
-  },
-  logo: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    marginRight: theme.spacing(1),
-  },
-  toolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  logoContainer: {
-    display: "flex",
-    alignItems: "center",
   },
 }));
+
+const AiButton = styled(Button)({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 600,
+  borderRadius: "24px",
+  padding: "12px 32px",
+  marginLeft: "16px",
+  backgroundColor: "#ff7e5f",
+  "&:hover": { backgroundColor: "#feb47b" },
+});
 
 export default Header;
