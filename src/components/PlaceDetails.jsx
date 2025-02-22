@@ -9,19 +9,48 @@ import {
   CardActions,
   Chip,
   IconButton,
+  Rating,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LanguageIcon from "@mui/icons-material/Language";
 import TripOriginIcon from "@mui/icons-material/TripOrigin";
-import Rating from "@mui/lab/Rating";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/Share";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
+
+// Styled Components (Replaces makeStyles)
+const CardStyled = styled(Card)(({ theme }) => ({
+  background: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+  borderRadius: "15px",
+  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+  color: theme.palette.text.primary,
+  overflow: "hidden",
+}));
+
+const MediaStyled = styled(CardMedia)({
+  height: 350,
+  borderRadius: "15px 15px 0 0",
+});
+
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  background: "linear-gradient(135deg, #f37335 0%, #fda085 100%)",
+  color: theme.palette.common.white,
+  "&:hover": {
+    background: "linear-gradient(135deg, #fda085 0%, #f37335 100%)",
+  },
+}));
+
+const FavoriteIconStyled = styled(FavoriteIcon)(({ theme }) => ({
+  color: theme.palette.secondary.main,
+}));
+
+const FavoriteBorderIconStyled = styled(FavoriteBorderIcon)(({ theme }) => ({
+  color: theme.palette.secondary.main,
+}));
 
 const PlaceDetails = ({ place, selected, refProp }) => {
-  const classes = useStyles();
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleFavoriteClick = () => {
@@ -32,9 +61,8 @@ const PlaceDetails = ({ place, selected, refProp }) => {
     refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <Card className={classes.card} elevation={6}>
-      <CardMedia
-        className={classes.media}
+    <CardStyled elevation={6}>
+      <MediaStyled
         image={
           place.photo
             ? place.photo.images.large.url
@@ -43,32 +71,30 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         title={place.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" className={classes.title}>
+        <Typography gutterBottom variant="h5">
           <b>{place.name}</b>
         </Typography>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="subtitle1" className={classes.numReviews}>
+          <Typography variant="subtitle1">
             <Rating value={Number(place.rating)} readOnly /> &nbsp; [
             {place.num_reviews} reviews]
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle1">
-            <b>Price: </b>
-            {place.price_level}
+            <b>Price: </b> {place.price_level}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle1">
-            <b>Ranking: </b>
-            {place.ranking}
+            <b>Ranking: </b> {place.ranking}
           </Typography>
         </Box>
+
         {place?.awards?.map((award) => (
           <Box
             key={award.display_name}
             display="flex"
-            justifyContent="space-between"
             alignItems="center"
             my={1}
           >
@@ -78,145 +104,67 @@ const PlaceDetails = ({ place, selected, refProp }) => {
             </Typography>
           </Box>
         ))}
+
         <Box display="flex" flexWrap="wrap" my={1}>
           {place?.cuisine?.map(({ name }) => (
             <Chip
               key={name}
               size="small"
               label={name}
-              className={classes.chip}
+              sx={{ margin: "5px 5px 5px 0" }}
             />
           ))}
         </Box>
+
         {place?.address ? (
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            color="textSecondary"
-            className={classes.subtitle}
-          >
+          <Typography gutterBottom variant="subtitle2" color="textSecondary">
             <LocationOnIcon /> &nbsp; {place.address}
           </Typography>
         ) : (
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            color="textSecondary"
-            className={classes.subtitle}
-          >
+          <Typography gutterBottom variant="subtitle2" color="textSecondary">
             <LocationOnIcon /> &nbsp; No address available
           </Typography>
         )}
 
         {place?.phone ? (
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            color="textSecondary"
-            className={classes.spacing}
-          >
-            <PhoneIcon />
-            &nbsp; {place.phone}
+          <Typography gutterBottom variant="subtitle2" color="textSecondary">
+            <PhoneIcon /> &nbsp; {place.phone}
           </Typography>
         ) : (
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            color="textSecondary"
-            className={classes.spacing}
-          >
-            <PhoneIcon /> &nbsp;No contact available
+          <Typography gutterBottom variant="subtitle2" color="textSecondary">
+            <PhoneIcon /> &nbsp; No contact available
           </Typography>
         )}
 
-        <CardActions className={classes.cardActions}>
-          <Button
+        <CardActions sx={{ justifyContent: "space-between" }}>
+          <ButtonStyled
             size="small"
-            className={classes.button}
             startIcon={<TripOriginIcon />}
             onClick={() => window.open(place.web_url, "_blank")}
           >
             Trip Advisor
-          </Button>
-          <Button
+          </ButtonStyled>
+          <ButtonStyled
             size="small"
-            className={classes.button}
             startIcon={<LanguageIcon />}
             onClick={() => window.open(place.website, "_blank")}
           >
             Website
-          </Button>
+          </ButtonStyled>
           <IconButton onClick={handleFavoriteClick}>
             {isFavorited ? (
-              <FavoriteIcon className={classes.favoriteIcon} />
+              <FavoriteIconStyled />
             ) : (
-              <FavoriteBorderIcon className={classes.favoriteIcon} />
+              <FavoriteBorderIconStyled />
             )}
           </IconButton>
           <IconButton onClick={() => alert("Share functionality coming soon!")}>
-            <ShareIcon className={classes.shareIcon} />
+            <ShareIcon />
           </IconButton>
         </CardActions>
       </CardContent>
-    </Card>
+    </CardStyled>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    background: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
-    borderRadius: "15px",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-    color: theme.palette.text.primary,
-    overflow: "hidden",
-  },
-  media: {
-    height: 350,
-    borderRadius: "15px 15px 0 0",
-  },
-  title: {
-    fontFamily: "'Poppins', sans-serif",
-    fontWeight: 700,
-    color: theme.palette.text.primary,
-  },
-  chip: {
-    margin: "5px 5px 5px 0",
-    background: "linear-gradient(135deg, #f6a911 0%, #fda085 100%)",
-    color: theme.palette.common.white,
-  },
-  subtitle: {
-    display: "flex",
-    alignItems: "center",
-    marginTop: "10px",
-  },
-  spacing: {
-    display: "flex",
-    alignItems: "center",
-  },
-  button: {
-    background: "linear-gradient(135deg, #f37335 0%, #fda085 100%)",
-    color: theme.palette.common.white,
-    "&:hover": {
-      background: "linear-gradient(135deg, #fda085 0%, #f37335 100%)",
-    },
-  },
-  cardActions: {
-    justifyContent: "space-between",
-  },
-  numReviews: {
-    marginLeft: theme.spacing(1),
-    display: "flex",
-    alignItems: "center",
-  },
-  details: {
-    fontWeight: "bold",
-  },
-  favoriteIcon: {
-    color: theme.palette.secondary.main,
-  },
-  shareIcon: {
-    color: theme.palette.primary.main,
-  },
-}));
 
 export default PlaceDetails;

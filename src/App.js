@@ -50,9 +50,9 @@ const App = () => {
     <>
       <CssBaseline />
       <Header />
-      
-        <Hero />
-     
+
+      <Hero />
+
       <Container maxWidth="xl" id="main-content">
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} id="map">

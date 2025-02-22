@@ -48,6 +48,7 @@ To run this project locally, follow these steps:
    ```
 4. Create a `.env` file in the root directory and add the required API keys:
    ```plaintext
+   REACT_APP_ENV=development (optional)
    REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
    REACT_APP_TRAVEL_ADVISOR_API_KEY=your_travel_advisor_api_key
    REACT_APP_OPENWEATHERMAP_API_KEY=your_openweather_api_key
