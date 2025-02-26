@@ -76,14 +76,15 @@ const Header = () => {
   );
 };
 
-/* ✅ Use Styled Components instead of makeStyles */
-const StyledAppBar = styled(AppBar)(({ theme, hide }) => ({
+const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== "hide", // Prevent `hide` from being passed as an attribute
+})(({ theme, hide }) => ({
   background: "linear-gradient(to right, #ff7e5f, #feb47b)",
   boxShadow: "none",
   borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
   transition: "top 0.3s",
   zIndex: theme.zIndex.drawer + 1,
-  top: hide ? "-72px" : "0",
+  top: hide ? "-72px" : "0px", // Apply CSS conditionally
 }));
 
 const LogoContainer = styled(Box)({
