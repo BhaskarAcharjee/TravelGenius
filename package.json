@@ -10,7 +10,6 @@
     "@mui/icons-material": "^6.4.5",
     "@mui/lab": "^6.0.0-beta.28",
     "@mui/material": "^6.4.5",
-    "@mui/styles": "^6.4.5",
     "@mui/system": "^6.4.3",
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^6.4.6",

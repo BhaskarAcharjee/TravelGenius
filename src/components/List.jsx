@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createRef } from "react";
 import {
-  CircularProgress,
   Grid,
   Typography,
   Box,
@@ -8,96 +7,87 @@ import {
   Button,
   MenuItem,
   Menu,
+  InputBase,
+  Paper,
+  Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PlaceDetails from "./PlaceDetails";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import HotelIcon from "@mui/icons-material/Hotel";
-import AttractionsIcon from "@mui/icons-material/LocalActivity";
+import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import GridOnIcon from "@mui/icons-material/GridOn";
-import ListIcon from "@mui/icons-material/List";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
+import StarIcon from "@mui/icons-material/Star";
 
-const ContainerWrapper = styled("div")(({ theme }) => ({
-  padding: "20px",
-  backgroundColor: "#f0f2f5",
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  marginTop: "20px",
-  marginBottom: "20px",
+const SectionWrapper = styled(Box)(({ theme }) => ({
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(4),
 }));
 
-const Title = styled(Typography)({
-  fontFamily: "'Poppins', sans-serif",
-  fontWeight: 600,
-  background: "linear-gradient(to right, #ff7e5f, #feb47b)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  marginBottom: "10px",
-});
-
-const ControlsContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "16px",
-  flexWrap: "wrap",
-  gap: "10px",
-});
-
-const CategoryButton = styled(Button)(({ selected }) => ({
-  padding: "8px 16px",
+const ControlsCard = styled(Paper)(({ theme }) => ({
+  padding: "16px 24px",
   borderRadius: "20px",
-  textTransform: "none",
-  fontWeight: selected ? "bold" : "normal",
+  backgroundColor: "#FFFFFF",
+  border: "1px solid #E2E8F0",
+  boxShadow: "0 4px 20px rgba(15, 23, 42, 0.03)",
+  marginBottom: "24px",
+}));
+
+const CategoryPill = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "selected",
+})(({ selected }) => ({
+  borderRadius: "12px",
+  padding: "8px 20px",
+  fontWeight: 700,
+  fontSize: "0.9rem",
   background: selected
-    ? "linear-gradient(to right, #ff7e5f, #feb47b)"
-    : "transparent",
-  color: selected ? "#fff" : "#000",
-  border: selected ? "none" : "1px solid #ff7e5f",
+    ? "linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%)"
+    : "#F1F5F9",
+  color: selected ? "#FFFFFF" : "#475569",
+  boxShadow: selected ? "0 4px 12px rgba(14, 165, 233, 0.3)" : "none",
   "&:hover": {
-    background: "linear-gradient(to right, #ff7e5f, #feb47b)",
-    color: "#fff",
+    background: selected
+      ? "linear-gradient(135deg, #0284C7 0%, #1D4ED8 100%)"
+      : "#E2E8F0",
   },
 }));
 
-const ListWrapper = styled(Grid)(({ theme }) => ({
-  height: "75vh",
-  overflowY: "auto",
-  // backgroundColor: "#fff",
-  borderRadius: theme.shape.borderRadius,
-  // boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  padding: "16px",
-  marginTop: "8px",
-  "&::-webkit-scrollbar": {
-    width: "8px",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "#ff7e5f",
-    borderRadius: "4px",
-  },
-  "&::-webkit-scrollbar-track": {
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: "4px",
-  },
-}));
+const SearchBar = styled(Paper)({
+  display: "flex",
+  alignItems: "center",
+  padding: "4px 12px",
+  borderRadius: "12px",
+  backgroundColor: "#F8FAFC",
+  border: "1px solid #E2E8F0",
+  boxShadow: "none",
+  width: "240px",
+});
 
-const List = ({ places, childClicked, isLoading, type, setType, rating, setRating }) => {
+const List = ({
+  places = [],
+  childClicked,
+  isLoading,
+  type,
+  setType,
+  rating,
+  setRating,
+  savedPlaces = [],
+  onToggleSave,
+}) => {
   const [elRefs, setElRefs] = useState([]);
   const [layout, setLayout] = useState("grid");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     const refs = Array(places?.length)
       .fill()
       .map((_, i) => elRefs[i] || createRef());
-
     setElRefs(refs);
   }, [places]);
-
-  const handleLayoutChange = (newLayout) => {
-    setLayout(newLayout);
-  };
 
   const handleFilterClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -107,79 +97,121 @@ const List = ({ places, childClicked, isLoading, type, setType, rating, setRatin
     setAnchorEl(null);
   };
 
+  const filteredPlaces = places.filter((place) => {
+    if (!searchKeyword) return true;
+    return (
+      place.name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      place.address?.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  });
+
   return (
-    <ContainerWrapper>
-      <Title variant="h4">
-        <b>Explore Dining, Accommodations, and Attractions Nearby</b>
-      </Title>
-      {isLoading ? (
-        <Box
-          height="600px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <CircularProgress size="5rem" />
+    <SectionWrapper id="list-section">
+      <Box mb={3}>
+        <Typography variant="h4" fontWeight={800} letterSpacing="-0.02em" gutterBottom>
+          Handpicked <span className="gradient-text-primary">Destinations & Dining</span>
+        </Typography>
+        <Typography variant="body1" color="textSecondary">
+          Browse top-rated venues near your selected coordinates or filter by rating and category.
+        </Typography>
+      </Box>
+
+      {/* Filter Controls Card */}
+      <ControlsCard>
+        <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+          {/* Category Tabs */}
+          <Box display="flex" gap={1.5} flexWrap="wrap">
+            <CategoryPill
+              selected={type === "restaurants"}
+              onClick={() => setType("restaurants")}
+              startIcon={<RestaurantIcon />}
+            >
+              Restaurants
+            </CategoryPill>
+            <CategoryPill
+              selected={type === "hotels"}
+              onClick={() => setType("hotels")}
+              startIcon={<HotelIcon />}
+            >
+              Hotels & Resorts
+            </CategoryPill>
+            <CategoryPill
+              selected={type === "attractions"}
+              onClick={() => setType("attractions")}
+              startIcon={<LocalActivityIcon />}
+            >
+              Attractions
+            </CategoryPill>
+          </Box>
+
+          {/* Search Keyword & View Switcher */}
+          <Box display="flex" alignItems="center" gap={1.5} flexWrap="wrap">
+            <SearchBar>
+              <SearchIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
+              <InputBase
+                placeholder="Filter by name..."
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                sx={{ fontSize: "0.875rem", fontFamily: "'Inter', sans-serif" }}
+              />
+            </SearchBar>
+
+            {/* Rating Filter Menu */}
+            <Button
+              size="small"
+              onClick={handleFilterClick}
+              startIcon={<FilterListIcon />}
+              endIcon={<StarIcon sx={{ color: "#F59E0B" }} />}
+              sx={{ borderRadius: "12px", border: "1px solid #E2E8F0", px: 2, color: "#0F172A" }}
+            >
+              {rating > 0 ? `${rating}★ & up` : "All Ratings"}
+            </Button>
+
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleFilterClose}>
+              <MenuItem onClick={() => { setRating(0); handleFilterClose(); }}>All Ratings</MenuItem>
+              <MenuItem onClick={() => { setRating(3); handleFilterClose(); }}>Above 3.0 ★</MenuItem>
+              <MenuItem onClick={() => { setRating(4); handleFilterClose(); }}>Above 4.0 ★</MenuItem>
+              <MenuItem onClick={() => { setRating(4.5); handleFilterClose(); }}>Above 4.5 ★</MenuItem>
+            </Menu>
+
+            {/* View Mode Toggle */}
+            <IconButton onClick={() => setLayout("grid")} color={layout === "grid" ? "primary" : "default"}>
+              <GridOnIcon />
+            </IconButton>
+            <IconButton onClick={() => setLayout("list")} color={layout === "list" ? "primary" : "default"}>
+              <ViewListIcon />
+            </IconButton>
+          </Box>
         </Box>
+      </ControlsCard>
+
+      {/* Grid or List View */}
+      {isLoading ? (
+        <Grid container spacing={3}>
+          {[1, 2, 3, 4, 5, 6].map((key) => (
+            <Grid item xs={12} sm={layout === "grid" ? 6 : 12} md={layout === "grid" ? 4 : 12} key={key}>
+              <Skeleton variant="rounded" height={320} sx={{ borderRadius: 4 }} />
+              <Box pt={1}>
+                <Skeleton width="60%" height={28} />
+                <Skeleton width="40%" height={20} />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      ) : filteredPlaces.length === 0 ? (
+        <Paper sx={{ p: 6, textAlign: "center", borderRadius: 4, bgcolor: "#FFFFFF", border: "1px solid #E2E8F0" }}>
+          <Typography variant="h6" fontWeight={700} color="textSecondary" gutterBottom>
+            No destinations found matching your criteria.
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Try adjusting your search filter or clearing the rating filter.
+          </Typography>
+        </Paper>
       ) : (
-        <>
-          <ControlsContainer>
-            {/* Category Selection */}
-            <Box display="flex" gap={1}>
-              <CategoryButton
-                selected={type === "restaurants"}
-                onClick={() => setType("restaurants")}
-                startIcon={<RestaurantIcon />}
-              >
-                Restaurants
-              </CategoryButton>
-              <CategoryButton
-                selected={type === "hotels"}
-                onClick={() => setType("hotels")}
-                startIcon={<HotelIcon />}
-              >
-                Accommodations
-              </CategoryButton>
-              <CategoryButton
-                selected={type === "attractions"}
-                onClick={() => setType("attractions")}
-                startIcon={<AttractionsIcon />}
-              >
-                Attractions
-              </CategoryButton>
-            </Box>
-
-            {/* Right-Side Icons */}
-            <Box display="flex" alignItems="center">
-              {/* Rating Filter */}
-              <IconButton onClick={handleFilterClick}>
-                <FilterListIcon />
-              </IconButton>
-
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleFilterClose}
-              >
-                <MenuItem onClick={() => setRating(0)}>All</MenuItem>
-                <MenuItem onClick={() => setRating(3)}>Above 3.0 ★</MenuItem>
-                <MenuItem onClick={() => setRating(4)}>Above 4.0 ★</MenuItem>
-                <MenuItem onClick={() => setRating(4.5)}>Above 4.5 ★</MenuItem>
-              </Menu>
-
-              {/* View Mode Toggle */}
-              <IconButton onClick={() => handleLayoutChange("grid")}>
-                <GridOnIcon color={layout === "grid" ? "primary" : "inherit"} />
-              </IconButton>
-              <IconButton onClick={() => handleLayoutChange("list")}>
-                <ListIcon color={layout === "list" ? "primary" : "inherit"} />
-              </IconButton>
-            </Box>
-          </ControlsContainer>
-
-          {/* List/Grid View */}
-          <ListWrapper container spacing={3}>
-            {places?.map((place, i) => (
+        <Grid container spacing={3}>
+          {filteredPlaces.map((place, i) => {
+            const isSaved = savedPlaces.some((item) => item.name === place.name);
+            return (
               <Grid
                 ref={elRefs[i]}
                 item
@@ -192,13 +224,15 @@ const List = ({ places, childClicked, isLoading, type, setType, rating, setRatin
                   place={place}
                   selected={Number(childClicked) === i}
                   refProp={elRefs[i]}
+                  isSaved={isSaved}
+                  onToggleSave={onToggleSave}
                 />
               </Grid>
-            ))}
-          </ListWrapper>
-        </>
+            );
+          })}
+        </Grid>
       )}
-    </ContainerWrapper>
+    </SectionWrapper>
   );
 };
 

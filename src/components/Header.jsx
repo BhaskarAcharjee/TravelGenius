@@ -7,24 +7,87 @@ import {
   Avatar,
   IconButton,
   Button,
+  Badge,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import MapIcon from "@mui/icons-material/Map";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { styled, alpha } from "@mui/material/styles"; // ✅ Correct import
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import { styled } from "@mui/material/styles";
 import { Link as ScrollLink } from "react-scroll";
 
-const Header = () => {
+const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== "hide",
+})(({ theme, hide }) => ({
+  background: "rgba(15, 23, 42, 0.88)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.15)",
+  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+  transition: "all 0.3s ease-in-out",
+  zIndex: theme.zIndex.drawer + 1,
+  top: hide ? "-80px" : "0px",
+}));
+
+const LogoText = styled(Typography)({
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
+  fontWeight: 800,
+  fontSize: "1.35rem",
+  letterSpacing: "-0.02em",
+  background: "linear-gradient(135deg, #FFFFFF 0%, #38BDF8 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+});
+
+const NavButton = styled(Button)({
+  color: "#94A3B8",
+  fontWeight: 600,
+  fontSize: "0.9rem",
+  borderRadius: "10px",
+  padding: "6px 14px",
+  transition: "all 0.2s ease",
+  "&:hover": {
+    color: "#FFFFFF",
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
+  },
+});
+
+const AiButton = styled(Button)({
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
+  fontWeight: 700,
+  borderRadius: "12px",
+  padding: "8px 20px",
+  background: "linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%)",
+  color: "#FFFFFF",
+  boxShadow: "0 4px 14px rgba(14, 165, 233, 0.3)",
+  "&:hover": {
+    background: "linear-gradient(135deg, #0284C7 0%, #1D4ED8 100%)",
+    boxShadow: "0 6px 20px rgba(14, 165, 233, 0.4)",
+  },
+});
+
+const Header = ({ savedCount = 0, onOpenSaved }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [scrollDirection, setScrollDirection] = useState("up");
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      setScrollDirection(currentScrollTop > lastScrollTop ? "down" : "up");
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setScrollDirection(currentScrollTop > lastScrollTop && currentScrollTop > 100 ? "down" : "up");
       setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
     };
 
@@ -37,79 +100,115 @@ const Header = () => {
     if (aiSection) aiSection.scrollIntoView({ behavior: "smooth" });
   };
 
+  const navItems = [
+    { label: "Home", to: "hero", icon: <HomeIcon /> },
+    { label: "Interactive Map", to: "map-section", icon: <MapIcon /> },
+    { label: "Weather", to: "weather-section", icon: <WbSunnyIcon /> },
+    { label: "Explore Places", to: "list-section", icon: <RestaurantIcon /> },
+  ];
+
   return (
     <StyledAppBar position="fixed" hide={scrollDirection === "down"}>
-      <Toolbar>
-        <LogoContainer>
-          <Avatar src="/logo.png" alt="Travel Genius Logo" />
-          <Typography
-            variant="h5"
-            sx={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
-          >
-            Travel Genius
-          </Typography>
-        </LogoContainer>
-        <NavLinks>
-          <ScrollLink to="hero" smooth duration={500}>
-            <IconButton color="inherit">
-              <HomeIcon />
-            </IconButton>
-          </ScrollLink>
-          <ScrollLink to="map" smooth duration={500}>
-            <IconButton color="inherit">
-              <MapIcon />
-            </IconButton>
-          </ScrollLink>
-          <ScrollLink to="list-content" smooth duration={500}>
-            <IconButton color="inherit">
-              <RestaurantIcon />
-            </IconButton>
-          </ScrollLink>
-        </NavLinks>
+      <Toolbar sx={{ justifyContent: "space-between", py: 0.5, px: { xs: 2, md: 4 } }}>
+        {/* Brand Logo */}
+        <Box display="flex" alignItems="center" gap={1.5} sx={{ cursor: "pointer" }}>
+          <Avatar
+            src="/logo.png"
+            alt="TravelGenius Logo"
+            sx={{ width: 40, height: 40, border: "2px solid rgba(14, 165, 233, 0.5)" }}
+          />
+          <LogoText variant="h6">TravelGenius</LogoText>
+        </Box>
+
+        {/* Desktop Navigation Links */}
         {!isMobile && (
-          <AiButton onClick={handleAiRecommendationClick}>
-            Get AI Recommendation
-          </AiButton>
+          <Box display="flex" alignItems="center" gap={1}>
+            {navItems.map((item) => (
+              <ScrollLink key={item.label} to={item.to} smooth duration={500} offset={-70}>
+                <NavButton startIcon={item.icon}>{item.label}</NavButton>
+              </ScrollLink>
+            ))}
+          </Box>
         )}
+
+        {/* Actions (Saved Wishlist + AI Assistant + Mobile Menu) */}
+        <Box display="flex" alignItems="center" gap={1.5}>
+          <IconButton color="inherit" onClick={onOpenSaved} sx={{ color: "#F8FAFC" }}>
+            <Badge badgeContent={savedCount} color="secondary">
+              <BookmarkIcon />
+            </Badge>
+          </IconButton>
+
+          {!isMobile && (
+            <AiButton startIcon={<AutoAwesomeIcon />} onClick={handleAiRecommendationClick}>
+              AI Planner
+            </AiButton>
+          )}
+
+          {isMobile && (
+            <IconButton color="inherit" onClick={() => setMobileMenuOpen(true)}>
+              <MenuIcon />
+            </IconButton>
+          )}
+        </Box>
       </Toolbar>
+
+      {/* Mobile Navigation Drawer */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        PaperProps={{
+          sx: {
+            width: 280,
+            background: "#0F172A",
+            color: "#FFFFFF",
+            p: 2,
+          },
+        }}
+      >
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Typography variant="h6" fontWeight={700} color="#0EA5E9">
+            TravelGenius
+          </Typography>
+          <IconButton color="inherit" onClick={() => setMobileMenuOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <List>
+          {navItems.map((item) => (
+            <ScrollLink
+              key={item.label}
+              to={item.to}
+              smooth
+              duration={500}
+              offset={-70}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <ListItem button sx={{ borderRadius: 2, mb: 1, color: "#94A3B8" }}>
+                <ListItemIcon sx={{ color: "#0EA5E9", minWidth: 40 }}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: 600 }} />
+              </ListItem>
+            </ScrollLink>
+          ))}
+        </List>
+
+        <Box mt={3}>
+          <AiButton
+            fullWidth
+            startIcon={<AutoAwesomeIcon />}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              handleAiRecommendationClick();
+            }}
+          >
+            AI Trip Planner
+          </AiButton>
+        </Box>
+      </Drawer>
     </StyledAppBar>
   );
 };
-
-const StyledAppBar = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== "hide", // Prevent `hide` from being passed as an attribute
-})(({ theme, hide }) => ({
-  background: "linear-gradient(to right, #ff7e5f, #feb47b)",
-  boxShadow: "none",
-  borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-  transition: "top 0.3s",
-  zIndex: theme.zIndex.drawer + 1,
-  top: hide ? "-72px" : "0px", // Apply CSS conditionally
-}));
-
-const LogoContainer = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-});
-
-const NavLinks = styled(Box)(({ theme }) => ({
-  flexGrow: 1,
-  display: "flex",
-  justifyContent: "center",
-  gap: theme.spacing(2),
-  [theme.breakpoints.down("sm")]: {
-    display: "none",
-  },
-}));
-
-const AiButton = styled(Button)({
-  fontFamily: "'Poppins', sans-serif",
-  fontWeight: 600,
-  borderRadius: "24px",
-  padding: "12px 32px",
-  marginLeft: "16px",
-  backgroundColor: "#ff7e5f",
-  "&:hover": { backgroundColor: "#feb47b" },
-});
 
 export default Header;

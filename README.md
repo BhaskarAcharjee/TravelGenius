@@ -1,73 +1,89 @@
-## TravelGenius
+# 🌍 TravelGenius - Next-Gen AI Travel Assistant & Destination Guide
 
-TravelGenius is a React-based travel planning application designed to help users explore nearby attractions, restaurants, and hotels using real-time location data and weather forecasts. This project integrates Material UI for modern styling and leverages the Google Maps API for interactive map functionality and location-based recommendations. Additionally, the app features AI-powered recommendations to enhance user experience by providing personalized travel plans.
+[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
+[![Material-UI](https://img.shields.io/badge/MUI-v6.4-007FFF.svg)](https://mui.com/)
+[![Gemini AI](https://img.shields.io/badge/Google-Gemini_AI-8E75FF.svg)](https://deepmind.google/technologies/gemini/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000.svg)](https://travelgenius.vercel.app/)
 
-### Live Link
-Visit the site at [TravelGenius](https://travelgenius.vercel.app/)
+**TravelGenius** is a modern, stylish, and intelligent web application designed for travelers worldwide. Powered by Google Gemini AI, interactive Google Maps, real-time weather forecasts, and rich destination data (restaurants, luxury accommodations, tourist attractions), TravelGenius delivers bespoke travel itineraries and handpicked local recommendations.
 
-### Snapshots
-#### Landing Page
-![Landing page](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/97066c9e-7bd3-42fc-a8ed-3805cd00b5cb)
-#### App Interface
-![Map & Weather Interface](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/7f4d30e2-583e-4b29-ad40-66cb5202ec67)
-![Trip Planner](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/cc0bf09e-8722-44a8-9a02-4eec11380cf2)
-#### AI-Powered Recommendations
-![AI Trip Plan](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/024527e1-0c35-447a-b127-565a3f30b7a2)
-![Detailed AI Plan](https://github.com/BhaskarAcharjee/TravelGenius/assets/76872572/9496a59c-a741-4c53-8b45-e20bed6960b9)
+---
 
-### Features
-- **Nearby Places Recommendations:** Get recommendations for attractions, restaurants, and hotels near your location.
-- **Real-time Weather Forecast:** Provides current weather conditions to help plan your trip.
-- **Interactive Map Integration:** Uses Google Maps API for seamless navigation and location-based suggestions.
-- **AI-Powered Travel Plans:** Generate personalized travel plans based on user input (destination, budget, mood, and duration).
-- **Modern UI/UX:** Built with Material UI 5 for a sleek and responsive user experience.
-- **Multi-criteria Filters:** Customize search results based on preferences like budget, travel mood, and interests.
+## ✨ Features & Highlights
 
-### Technologies Used
-- **Frontend:** React, JavaScript, Material UI
-- **APIs:**
-  - Google Maps API (Location Search, Places, and Navigation)
-  - Travel Advisor API (Tourist Attractions, Hotels, Restaurants)
-  - OpenWeatherMap API (Real-time Weather Updates)
-  - Google Generative AI API (Smart AI Recommendations)
+- **✨ AI Travel Concierge**: Step-by-step interactive trip planner powered by Google Gemini AI. Select city, duration, budget, and vibe to generate custom day-by-day itineraries with exportable Markdown files.
+- **🎨 Glassmorphic Slate Design**: Built with custom Material-UI (v6) theme tokens, Plus Jakarta Sans typography, high-contrast dark/light glass card overlays, and subtle micro-animations.
+- **🗺️ Interactive Map Exploration**: Dark/Silver styled custom Google Map with live place markers, thumbnail previews, rating badges, and smooth panning.
+- **🔍 Smart Search & Destination Presets**: Direct city search bar with quick preset tags for top travel hubs (Paris, Tokyo, New York, Bali, Dubai, London).
+- **❤️ Saved Wishlist Drawer**: Slide-over wishlist drawer persisting your favorite restaurants and hotels locally using `localStorage`.
+- **🌤️ Live Weather Metrics**: Real-time temperature, condition icons, humidity, wind speed, and feels-like temperature.
+- **🚀 Complete SEO Optimization**: Full OpenGraph, Twitter Cards, Schema.org JSON-LD structured data, Web App Manifest, `robots.txt`, and `sitemap.xml` for Google Search ranking.
 
-### Getting Started
-To run this project locally, follow these steps:
+---
 
-1. Clone this repository.
+## 🛠️ Technology Stack
+
+- **Core Framework**: React 18
+- **UI & Styling**: Material-UI (v6), Emotion, Glassmorphic Vanilla CSS
+- **AI Integration**: Google Generative AI SDK (`@google/generative-ai`)
+- **Maps & Weather**: Google Maps API, OpenWeatherMap API, RapidAPI Travel Advisor
+- **State & Persistence**: React Hooks, `localStorage`
+- **Deployment**: Vercel & Vercel Analytics
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16.0 or higher)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/BhaskarAcharjee/TravelGenius.git
-   ```
-2. Navigate into the project directory.
-   ```bash
    cd TravelGenius
    ```
-3. Install dependencies.
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
-4. Create a `.env` file in the root directory and add the required API keys:
-   ```plaintext
-   REACT_APP_ENV=development (optional)
-   REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-   REACT_APP_TRAVEL_ADVISOR_API_KEY=your_travel_advisor_api_key
-   REACT_APP_OPENWEATHERMAP_API_KEY=your_openweather_api_key
-   REACT_APP_GEMINI_API_KEY=your_google_generative_ai_key
+
+3. **Set up Environment Variables:**
+   Create a `.env` file in the root directory and add your API keys:
+   ```env
+   REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_key
+   REACT_APP_RAPIDAPI_KEY=your_rapidapi_key
+   REACT_APP_OPENWEATHERMAP_KEY=your_openweathermap_key
+   REACT_APP_GEMINI_API_KEY=your_gemini_api_key
    ```
-5. Start the development server.
+
+4. **Run Locally:**
    ```bash
    npm start
    ```
-6. Open your browser and go to `http://localhost:3000` to view the application.
+   Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
-### Future Improvements
-- Add user authentication and personalized trip history.
-- Improve AI recommendations with more detailed itineraries.
-- Offline support for saved travel plans.
-- Enhanced filtering options for hotels and restaurants.
+5. **Build for Production:**
+   ```bash
+   npm run build
+   ```
 
-### License
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+---
 
-### Contributing
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+## 👨‍💻 Developer & Credits
+
+Crafted with ❤️ by **[Bhaskar Acharjee](https://bhaskaracharjee.vercel.app/)**
+- Website: [bhaskaracharjee.vercel.app](https://bhaskaracharjee.vercel.app/)
+- GitHub: [@BhaskarAcharjee](https://github.com/BhaskarAcharjee)
+- LinkedIn: [Bhaskar Acharjee](https://www.linkedin.com/in/bhaskar-acharjee/)
+- Twitter: [@_bha_s_kar_](https://twitter.com/_bha_s_kar_)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
