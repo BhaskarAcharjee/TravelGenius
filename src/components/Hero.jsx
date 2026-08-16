@@ -8,7 +8,6 @@ import {
   InputBase,
   Button,
   Chip,
-  Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";

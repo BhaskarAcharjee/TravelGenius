@@ -1,5 +1,5 @@
 // Modern Silver & Slate custom Google Maps style
-export default [
+const mapStyles = [
   {
     elementType: "geometry",
     stylers: [{ color: "#f5f5f5" }],
@@ -87,3 +87,5 @@ export default [
     stylers: [{ color: "#9e9e9e" }],
   },
 ];
+
+export default mapStyles;

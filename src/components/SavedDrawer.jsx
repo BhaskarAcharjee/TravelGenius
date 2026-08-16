@@ -7,12 +7,10 @@ import {
   Button,
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
   Avatar,
   Divider,
   Rating,
-  Chip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";

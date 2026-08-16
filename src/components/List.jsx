@@ -83,10 +83,11 @@ const List = ({
   const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
-    const refs = Array(places?.length)
-      .fill()
-      .map((_, i) => elRefs[i] || createRef());
-    setElRefs(refs);
+    setElRefs((prevRefs) =>
+      Array(places?.length || 0)
+        .fill()
+        .map((_, i) => prevRefs[i] || createRef())
+    );
   }, [places]);
 
   const handleFilterClick = (event) => {
